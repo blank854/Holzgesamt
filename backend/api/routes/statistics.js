@@ -1,0 +1,38 @@
+const express = require('express')
+const router = express.Router()
+const mongoose = require('mongoose')
+const Offer = require('../model/offerModel')
+const treeJSON = require('../../treeSpecies.json')
+
+router.get('/maximalPrice', (req, res, next) => {
+  Offer.findMax()
+    .then((offer) => {
+      res.status(200).json({
+        max: offer.price.priceValue,
+      })
+    })
+    .catch((error) => {
+      res.status(500).json({
+        error: error,
+      })
+    })
+})
+router.get('/treeSpecies', (req, res, next) => {
+  res.status(200).json({ treeJSON })
+})
+
+router.get('/treeSpecies/:filterString', (req, res, next) => {
+  let result = []
+  treeJSON.forEach((item, index) => {
+    if (
+      item.treeSpeciesGerman
+        .toLowerCase()
+        .includes(req.params.filterString.toLowerCase())
+    ) {
+      result.push(item)
+    }
+  })
+  res.status(200).json({ result })
+})
+
+module.exports = router

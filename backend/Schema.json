@@ -1,0 +1,28 @@
+{
+    "filters": [{
+            "field": "treedetail.species",
+            "value": "Eiche"
+        },
+        {
+            "field": "treeDetail.location",
+            "maxDistance": 1000,
+            "coordinates": [100.00, 20.00]
+        },
+        {
+            "field": "treedetail.dimensions.height",
+            "value": {
+                "$gte": 5
+            }
+        }
+    ],
+    "sorter": {
+        "price.priceValue": "-1"
+    },
+    "search":{
+        "value":"ich"
+    },
+    "paging":{
+        "limit":10,
+        "skip":20
+    }
+}
