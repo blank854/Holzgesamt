@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+@import 'sass/variables';
+@import '../node_modules/bootstrap/scss/bootstrap';
+
+@import 'sass/landing';
+@import 'sass/itemList';
+@import 'sass/recommendations';
+@import 'sass/item';
+@import 'sass/conversation';
+@import 'sass/chatList';
+@import 'sass/createAdvert';
+@import 'sass/chatIcon';
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.box-shadow {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}

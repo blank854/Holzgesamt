@@ -1,0 +1,14 @@
+.Item {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  transition: all 1s;
+
+  button {
+    visibility: visible;
+    opacity: 1;
+  }
+  .hidden {
+    visibility: hidden;
+    transition: visibility 0s, opacity 0.5s linear;
+    opacity: 0;
+  }
+}

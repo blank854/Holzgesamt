@@ -1,0 +1,46 @@
+.Conversation {
+  grid-template-rows: 1fr 9fr 2fr;
+  align-items: end;
+  .messageContainer {
+    .messages {
+      overflow-y: scroll;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .messages::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .example {
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+    }
+  }
+  .Message {
+    .ownMessage {
+      justify-content: flex-end;
+      .message-body {
+        text-align: right;
+        max-width: 80%;
+        background-color: $secondary;
+      }
+    }
+
+    .foreignMessage {
+      justify-content: flex-start;
+      .message-body {
+        text-align: left;
+        max-width: 80%;
+        background-color: #d1fae5;
+      }
+    }
+
+    .message-body-date {
+      text-align: right;
+      font-style: italic;
+      font-size: 0.7rem;
+    }
+  }
+}

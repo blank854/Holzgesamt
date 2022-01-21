@@ -1,0 +1,157 @@
+{
+  "OfferSchema": {
+    "_id": "61bb38eae3a4bb9c9dbd9998",
+    "user": "61b89a7f0aea81afb53c2d03",
+    "title": "Buche",
+    "description": "große Buche",
+    "price": {
+      "priceType": "Festpreis",
+      "priceValue": 750
+    },
+    "prospects": [],
+    "created": "1639659754000",
+    "lastUpdated": "1639659754000",
+    "treeDetail": {
+      "location": {
+        "type": "Point",
+        "coordinates": [36.098948, -112.110492]
+      },
+      "species": {
+        "german": "Buche",
+        "latin": "Veni Vidi Vici"
+      },
+      "dimensions": {
+        "height": 10,
+        "circumference": 4
+      },
+      "quality": "good",
+      "accesibility": "good",
+      "timeWindow": {
+        "restricted": false,
+        "from": "",
+        "till": ""
+      },
+      "protectionState": "",
+      "fellingState": {
+        "felled": true,
+        "fellingDate": "2012-04-23T18:25:43.511Z"
+      }
+    },
+    "pictures": []
+  },
+  "OfferPOSTInput": {
+    "title": "Buche",
+    "description": "große Buche",
+    "price": {
+      "priceType": "Festpreis",
+      "priceValue": 750
+    },
+    "treeDetail": {
+      "location": {
+        "type": "Point",
+        "coordinates": [-112.110492, 36.098948]
+      },
+      "species": {
+        "german": "Buche",
+        "latin": "Veni Vidi Vici"
+      },
+      "dimensions": {
+        "height": 10,
+        "circumference": 4
+      },
+      "quality": "good",
+      "accesibility": "good",
+      "timeWindow": {
+        "restricted": false,
+        "from": "",
+        "till": ""
+      },
+      "protectionState": "",
+      "fellingState": {
+        "felled": true,
+        "fellingDate": "2012-04-23T18:25:43.511Z"
+      }
+    },
+    "pictures": []
+  },
+  "offerGETInput(filters)": {
+    "filters": [
+      {
+        "field": "treedetail.species",
+        "value": "Eiche"
+      },
+      {
+        "field": "location",
+        "maxDistance": 1000,
+        "coordinates": [100.0, 100.0]
+      },
+      {
+        "field": "treedetail.dimensions.height",
+        "value": {
+          "$gte": 5
+        }
+      }
+    ]
+  },
+  "offerGEToutput(listenansicht, Array von solchen Objekten:)": {
+    "_id": "61bb38eae3a4bb9c9dbd9998",
+    "title": "Buche",
+    "price": {
+      "priceType": "Festpreis",
+      "priceValue": 750
+    },
+    "created": "1639659754000",
+    "lastUpdated": "1639659754000",
+    "treeDetail": {
+      "species": {
+        "german": "Buche",
+        "latin": "Veni Vidi Vici"
+      },
+      "fellingState": {
+        "felled": true,
+        "fellingDate": "2012-04-23T18:25:43.511Z"
+      }
+    },
+    "pictures": []
+  },
+  "offerGEToutput(detailansicht:)": {
+    "_id": "61bb38eae3a4bb9c9dbd9998",
+    "user": "61b89a7f0aea81afb53c2d03",
+    "title": "Buche",
+    "description": "große Buche",
+    "price": {
+      "priceType": "Festpreis",
+      "priceValue": 750
+    },
+    "prospects": [],
+    "created": "1639659754000",
+    "lastUpdated": "1639659754000",
+    "treeDetail": {
+      "location": {
+        "type": "Point",
+        "coordinates": [36.098948, -112.110492]
+      },
+      "species": {
+        "german": "Buche",
+        "latin": "Veni Vidi Vici"
+      },
+      "dimensions": {
+        "height": 10,
+        "circumference": 4
+      },
+      "quality": "good",
+      "accesibility": "good",
+      "timeWindow": {
+        "restricted": false,
+        "from": "",
+        "till": ""
+      },
+      "protectionState": "",
+      "fellingState": {
+        "felled": true,
+        "fellingDate": "2012-04-23T18:25:43.511Z"
+      }
+    },
+    "pictures": []
+  }
+}

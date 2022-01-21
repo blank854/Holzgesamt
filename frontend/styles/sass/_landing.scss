@@ -1,0 +1,10 @@
+.Landing {
+  background-image: url('../../public/assets/images/background.jpg');
+  min-height: 80vh;
+
+  .rc-slider-handle {
+    &:hover {
+      border: none;
+    }
+  }
+}

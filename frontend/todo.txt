@@ -1,0 +1,96 @@
+Fragen ans Backend:
+    * Warum wird nicht direkt Bildurl geliefert --> Anders doppelte Anfrage an API
+    * Wie muss Objekt aussehen, welches zum Erstellen von Inseraten an API gesendet wird
+    * Es wäre sehr vorteilhaft, die API baldmöglichst zu deployen, sodass wir immer mit der selben Version arbeiten
+        * Gerade auch wegen den Bildern, wenn diese nicht auf einem separaten Fileserver gespeichert werden
+
+Fragen ins Plenum:
+    * Wie siehts bei der Suchmaschinenoptimierung aus? Soll jedes Inserat indexiert werden oder bloß Kategorieseiten
+    * Welche Seiten neben dem eigentlichen Shop sollen angeboten werden?
+        * Wie wird Navigationsleiste aufgebaut?
+            - Home
+            - Gesuche
+            - Inserate
+            - Eigenes Profil
+    * Welche Filter gibt es?
+        - Umkreissuche
+    * In wie weit sollen die Inhalte auf der Webseite, wie z.B. Lexikon über eine Benutzeroberfläche für Administratoren gepflegt werden können
+    * Strings komplett in konstanten auslagern
+        --> Stichwort: i18n-files
+
+
+
+
+Wo soll Favoritenliste gespeichert werden: Im Nutzer oder in der Session?
+    * Im Nutzer
+Wie weit ist Recommendation engine?
+Werden Bilder in anderes Format (webp) gerendert?
+Werden Bilder als Thumbnailgröße und in richtiger Größe gespeichert?
+Wie soll Nutzerverwaltung aussehen?
+    - Design delegieren --> Marcel
+Wie soll Chatapp aussehen?
+    - Design delegieren --> Marcel
+Welche Funktionalitäten soll Chatapp besitzen? Bilder,...
+    * Am Anfang auf Text begrenzen
+Weitere Inhalte für Detailseite
+    	* Mehr Abstand zwischen Elementen
+        * Zurückbutton
+Wie funktioniert Filtern in der API?
+Wie funktioniert Suchen in der API?
+Wie genau soll der Standort des Baumes angezeigt werden?
+    * Stadt wird im Frontend geladen und koordinaten ans backend gesendet
+Wie soll Inseratserstellung aussehen?
+    - Design delegieren
+
+
+
+
+
+
+
+
+
+
+Welche Felder werden bei der Inseratserstellung benötigt?
+
+
+Das Backend muss liefern, ob bereits eine Konversation besteht oder nicht. Anders ist im Frontend keine eindeutige Zuordnung möglich
+Beim API endpunkt /user/:userId macht es keinen Sinn die User id mitzugeben. Bearer Token wird schon im Header übergeben. Identifizierung muss über token erfolgen!
+Beim API endpunkt /user/:userId müssen gleich Informationen im Chats array wie Name angezeigt werden. Sonst doppelte Anfrage!
+
+
+
+
+
+
+
+
+
+Ist es möglich, den Auslaufzeitpunkt des Tokens zurückzuliefern? --> https://github.com/tymondesigns/jwt-auth/issues/732
+    --> Neuen Token bekommen, z.B. nach 6 von 7 tagen. Browser überprüft, wie alt token ist und beantragt automatisch rechtzeitig neuen
+Rückgabe des Inseratsnamen und der Usernamen der Chatpartner in der Chatliste
+Ist Offcanvas auch für den Inseratserstellenden ausreichend oder soll dieser eine extra Seite bekommen, um seine Konversationen zu verwalten?
+
+
+Herr Späth und Kollege sind dabei um Anwendung anzuschauen
+Am Präsentationstag steht die Anwendung im Mittelpunkt hallo, das ist unsere Anwendung
+    Keine technische Erläuterungen
+    Kein PM
+    Visionen
+    15 Min darstellung des systems + 5 Min fragen = 20 Min
+
+An separaten Termin genau auf technik und PM eingehen
+    halbe Stunde zeit
+Dokumentation trennen zwischen technischer und benutzerdoku
+
+
+
+
+
+S3 Benachrichtigen
+
+TODO Fällstatus durch Verwendungszweck ersetzen
+TODO Empfehlungen mit get Endpunkt ohne Filter --> Standardmäßig absteigend nach Score soriert
+
+
+deutsche Baumspezies autocomplete
