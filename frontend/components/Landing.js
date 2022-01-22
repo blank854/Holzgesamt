@@ -64,16 +64,16 @@ const Landing = () => {
         },
       })
     }
-    console.log(felled)
 
-    if (felled === 1 || felled === 2) {
+    if (felled == 1 || felled == 2) {
       filter.filters.push({
         field: 'treeDetail.fellingState.felled',
         value: felled === 1 ? true : false,
       })
     }
 
-    router.push(`/search/${JSON.stringify(filter)}`)
+    console.log(filter.filters)
+    // router.push(`/search/${JSON.stringify(filter)}`)
   }
   return (
     <div className='Landing d-flex flex-row align-items-center'>
