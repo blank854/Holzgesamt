@@ -69,7 +69,7 @@ const createAdvert = () => {
       treeDetail: {
         species: {
           german: formDataObj.species,
-          latein: formDataObj.latinSpecies,
+          latin: formDataObj.latinSpecies,
         },
         dimensions: {
           height: formDataObj.height,
