@@ -25,6 +25,8 @@ export const UserProvider = ({ children }) => {
 
   const getAccountInformation = async () => {
     setMessage('')
+
+    if (!getUser()) return
     var config = {
       method: 'get',
       url: 'http://localhost:4000/user',
@@ -129,7 +131,7 @@ export const UserProvider = ({ children }) => {
 
   const getFavorites = async () => {
     setMessage('')
-    if (!getUser().token) {
+    if (!getUser()) {
       setMessage(
         'Du musst dich anmelden, um deine Favoriten einsehen zu können.'
       )

@@ -208,6 +208,8 @@ const createAdvert = () => {
   }, [file])
 
   useEffect(() => {
+    setMessage('')
+
     const config = {
       method: 'get',
       url: 'http://localhost:4000/statistics/treeSpecies',

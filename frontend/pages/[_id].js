@@ -28,6 +28,8 @@ const productDetail = ({ productDetail, API_KEY }) => {
   let map
 
   useEffect(() => {
+    setMessage('')
+
     console.log(productDetail)
     const loader = new Loader({
       apiKey: API_KEY,

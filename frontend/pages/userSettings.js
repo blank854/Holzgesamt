@@ -5,7 +5,8 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 
 const userSettings = () => {
-  const { getAccountInformation, accountInformation, updateUser } = useUser()
+  const { getAccountInformation, accountInformation, updateUser, loggedIn } =
+    useUser()
   const { setVariant, setMessage } = useMessage()
   const [prename, setPrename] = useState('')
   const [name, setName] = useState('')
@@ -13,10 +14,13 @@ const userSettings = () => {
   const [notification, setNotification] = useState()
 
   useEffect(() => {
+    console.log('test')
+    setMessage('')
     getAccountInformation()
   }, [])
 
   useEffect(() => {
+    setMessage('')
     setPrename(accountInformation.forename)
     setName(accountInformation.surname)
     setUsername(accountInformation.username)
@@ -35,6 +39,12 @@ const userSettings = () => {
     }
 
     await updateUser(userData)
+  }
+
+  if (!loggedIn) {
+    setMessage('Bitte melde dich an, um deine Accountinformation einzusehen.')
+    setVariant('warning')
+    return <Layout></Layout>
   }
   return (
     <Layout>

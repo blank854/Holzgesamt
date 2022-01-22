@@ -6,16 +6,30 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 
 const myFavorites = () => {
-  const { favorites, getFavorites, toggleFavorite } = useUser()
+  const { favorites, getFavorites, toggleFavorite, loggedIn } = useUser()
   const { setMessage, setVariant } = useMessage()
 
   useEffect(async () => {
     getFavorites()
+    setMessage('')
   }, [])
+
+  useEffect(() => {
+    if (loggedIn === true) {
+      setMessage('')
+      getFavorites()
+    }
+  }, [loggedIn])
 
   const handleRemoveFavorite = (offerId) => {
     console.log(offerId)
     toggleFavorite(offerId).then()
+  }
+
+  if (!loggedIn) {
+    setMessage('Bitte melde dich an, um deine Favoriten einzusehen.')
+    setVariant('warning')
+    return <Layout></Layout>
   }
 
   return (
