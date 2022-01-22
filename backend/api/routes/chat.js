@@ -5,7 +5,6 @@ const mailSender = require('../middleware/mailSender')
 const Chat = require('../model/chatModel')
 const Offer = require('../model/offerModel')
 const User = require('../model/userModel')
-const EventLog = require('../model/eventModel')
 const mongoose = require('mongoose')
 require('dotenv').config()
 
@@ -28,9 +27,8 @@ router.get("/:chatId", authCheck, (req, res, next) => {
             }
             const update = {
                 newMessages: result.newMessages
-            }
+            } 
 
-            .exec()
         })
         .catch((err) => { res.status(500).json({ message: "Error while finding chat", error: err }) })
 });
@@ -94,14 +92,6 @@ router.post('/', authCheck, async(req, res, next) => {
 
     Offer.findByIdAndUpdate(req.body.offer, {$inc : {'scores.contacts' : 1}})
         .exec()
-    const eventLog = new EventLog({
-        _id: new mongoose.Types.ObjectId(),
-        user: req.authUserData.userId,
-        offer: req.body.offer,
-        timestamp: Date(),
-        interactionType: "Kontakt",
-    })
-    eventLog.save().exec()
 
     const chat = new Chat({
         _id: new mongoose.Types.ObjectId(),

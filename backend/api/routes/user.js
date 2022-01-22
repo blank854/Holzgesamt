@@ -9,7 +9,6 @@ const path = require('path');
 const mailSender = require('../middleware/mailSender');
 const User = require("../model/userModel");
 const Offer = require("../model/offerModel");
-const EventLog = require('../model/eventModel')
 require('dotenv').config()
 
 router.post("/signup", (req, res, next) => {

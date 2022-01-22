@@ -13,6 +13,7 @@ require('dotenv').config()
  * @GET all Offers
  */
 router.get("/", (req, res, next) => {
+    console.log(req.body)
 
     const requestFilters = req.body.filters;
     let sorter = {};
@@ -66,19 +67,23 @@ router.post("/",authCheck, async (req, res, next) => {
         location = Treedetail.location
     }
     if (Treedetail.location.zip){
+        console.log(Treedetail.location.zip)
         const baseURl = `https://maps.googleapis.com/maps/api/geocode/json?address=`
-        const sendURL = `${baseURl}${Treedetail.location.zip}&key=${process.env.GOOGLE_API_KEY}`
+        const sendURL = `${baseURl}${Treedetail.location.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
     
         const googleResponse = await axios({ method: 'get', url:sendURL }).catch((error)=>{ console.log(error);
                                                                                             res.status(500).json({error:error})
                                                                                             return});
+                                                                                            console.log(googleResponse)
         try{
+            if (googleResponse.data.results.length > 0){
             location = {
                 type: "Point",
                 coordinates:[googleResponse.data.results[0].geometry.location.lat,
                             googleResponse.data.results[0].geometry.location.lng]
+                }
             }
-        } catch(e){ res.status(500).json({Error:"Postleitzahl-Error"});return}
+        } catch(e){ res.status(500).json({Message:"Postleitzahl-Error",error:e});return}
 
     }
 
@@ -151,37 +156,34 @@ router.put("/",authCheck, (req, res, next) => {
 
 router.get("/:offerID", (req, res, next) => {
     const oID = req.params.offerID
+    console.log(oID)
     Offer
         .findByIdAndUpdate(oID,{$inc : {'scores.detailViews' : 1}})
         .populate("user","username")
         .populate("recommendations.offer","_id created lastUpdated treeDetail.species fellingState title price pictures")
         .exec()
         .then(offerResult =>{ 
-            let sendResult = {...offerResult.toObject()}
-            const reconsNew = []
-            offerResult.recommendations.forEach((item, index)=>{
-                const flatRecom = {
-                    ...item.offer.toObject(),
-                    score: item.score
-                }
-                reconsNew.push(flatRecom)
-            })
-            sendResult.recommendations = reconsNew
-            res.status(200).json(sendResult)})
+            try {
+                let sendResult = {...offerResult.toObject()}
+                const reconsNew = []
+                offerResult.recommendations.forEach((item, index)=>{
+                    if (item.offer !== null){
+                        const flatRecom = {
+                            ...item.offer.toObject(),
+                            score: item.score
+                        }
+                        reconsNew.push(flatRecom)
+                    }
+                })
+                
+                sendResult.recommendations = reconsNew
+                res.status(200).json(sendResult)
+            } catch (e) {
+                console.log(res.status(500).json({message:"Error while finding offers",error:e}))
+            }
+        })
         .catch(err => {res.status(500).json({message:"Error while finding offers",error:err})})
 
-            try{
-                const token = req.headers.authorization.split(" ")[1];
-                const decoded = jwt.verify(token,process.env.JWTKEY);
-                const eventLog = new EventLog({
-                    _id: new mongoose.Types.ObjectId(),
-                    user: decoded.userId,
-                    offer: oID,
-                    timestamp: Date(),
-                    interactionType: "DetailSicht",
-                })
-                eventLog.save().catch(er=>{console.log(er)})
-            } catch (e){console.log(e)}
 
 });
 
