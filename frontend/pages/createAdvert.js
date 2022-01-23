@@ -22,8 +22,9 @@ const createAdvert = () => {
   const [felled, setFelled] = useState(false)
   const [availableQualities, setAvailableQualities] = useState([
     'Gerade',
-    'Sehr gut',
-    'Gut',
+    'Schief',
+    'Morsch',
+    'Totholz',
   ])
   const [latinSpeciesColor, setLatinSpeciesColor] = useState('')
   const [selectedQualities, setSelectedQualities] = useState('')
@@ -81,7 +82,7 @@ const createAdvert = () => {
         timeWindow: {
           restricted: formDataObj.restricted ? true : false,
           from: formDataObj.datefrom,
-          till: formDataObj.dateto,
+          to: formDataObj.dateto,
         },
         fellingState: {
           felled: formDataObj.felled ? true : false,
@@ -123,7 +124,16 @@ const createAdvert = () => {
         setVariant('danger')
       })
       .finally(() => {
+        setpriceValue(e.target.reset())
+        setPriceType(e.target.reset())
+        setImgPaths([])
+        setLatinSpecies(e.target.reset())
+        setSelectedSpecies(e.target.reset())
+        setSelectedQualities(e.target.reset())
+        setRestricted(e.target.reset())
+        setFelled(e.target.reset())
         e.target.reset()
+        window.scrollTo(0, 0)
       })
   }
 
@@ -525,7 +535,11 @@ const createAdvert = () => {
                         type='quality'
                         placeholder='Qualität'
                         name='quality'
+                        onChange={(e) => setSelectedQualities(e.target.value)}
                         value={selectedQualities}
+
+                        // onClick={() => handleAddQuality(selectedQualities)}
+                        // value={selectedQualities}
                       />
                       {/* {selectedQualities.join(',')} */}
                     </Col>
@@ -710,9 +724,7 @@ const createAdvert = () => {
                     </Form.Group>
                   </div>
                 </div>
-                {/* return(
-                <DatePicker multiple value={values} onChange={setValues} />)
-                <DatePicker value={value} onChange={setValue} /> */}
+
                 <Col sm={8}>
                   <div className='d-flex align-items-center'>
                     <Button
