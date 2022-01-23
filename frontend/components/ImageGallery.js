@@ -21,7 +21,7 @@ const ImageGallery = ({ images }) => {
               className='d-block w-100 rounded'
               src={image.access}
               alt='Bilder des Inserats'
-              style={{ objectFit: 'cover', height: '350px' }}
+              style={{ objectFit: 'scale-down', height: '350px' }}
             />
           </Carousel.Item>
         ))}

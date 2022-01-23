@@ -10,7 +10,7 @@ export function useChat() {
 }
 
 export const ChatProvider = ({ children }) => {
-  const { getUser, loggedIn } = useUser()
+  const { getUser } = useUser()
   const [loading, setLoading] = useState(false)
   const [conversation, setConversation] = useState()
   const [chatList, setChatList] = useState([])
@@ -27,10 +27,6 @@ export const ChatProvider = ({ children }) => {
 
   const getChatList = async () => {
     setMessage('')
-    if (loggedIn !== true) {
-      setMessage('Du musst angemeldet sein, um deine Nachrichten anzuschauen.')
-      setVariant('info')
-    }
     let config = {
       method: 'get',
       url: `http://localhost:4000/user`,
@@ -54,10 +50,6 @@ export const ChatProvider = ({ children }) => {
 
   const getMessages = async () => {
     setMessage('')
-    if (loggedIn === false) {
-      setMessage('Du musst angemeldet sein, um deine Nachrichten anzuschauen.')
-      setVariant('info')
-    }
     if (!conversation || conversation === 'newConversation') {
       return setMessages([])
     }

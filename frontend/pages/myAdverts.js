@@ -5,15 +5,19 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 
 const myAdverts = () => {
-  const { getAccountInformation, accountInformation } = useUser()
+  const { getAccountInformation, accountInformation, getUser } = useUser()
+  const { setMessage } = useMessage()
 
   useEffect(() => {
     getAccountInformation()
+    setMessage('')
   }, [])
 
   useEffect(() => {
     console.log(accountInformation)
   }, [accountInformation])
+
+  if (!getUser()) return <Layout></Layout>
   return (
     <Layout>
       <div className='mt-3'>

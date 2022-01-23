@@ -5,22 +5,20 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 
 const userSettings = () => {
-  const { getAccountInformation, accountInformation, updateUser, loggedIn } =
+  const { getAccountInformation, accountInformation, updateUser, getUser } =
     useUser()
-  const { setVariant, setMessage } = useMessage()
+  const { setMessage } = useMessage()
   const [prename, setPrename] = useState('')
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
   const [notification, setNotification] = useState()
 
   useEffect(() => {
-    console.log('test')
     setMessage('')
     getAccountInformation()
   }, [])
 
   useEffect(() => {
-    setMessage('')
     setPrename(accountInformation.forename)
     setName(accountInformation.surname)
     setUsername(accountInformation.username)
@@ -37,15 +35,11 @@ const userSettings = () => {
         emailNotification: notification,
       },
     }
-
     await updateUser(userData)
   }
 
-  if (!loggedIn) {
-    setMessage('Bitte melde dich an, um deine Accountinformation einzusehen.')
-    setVariant('warning')
-    return <Layout></Layout>
-  }
+  if (!getUser()) return <Layout></Layout>
+
   return (
     <Layout>
       <Form onSubmit={handleSubmit}>
@@ -121,7 +115,7 @@ const userSettings = () => {
               label='Chat-Benachrichtiungen per Mail erhalten'
               className='mb-3'
               value={notification}
-              onChange={(e) => setNotification(e.target.value)}
+              onChange={(e) => setNotification(e.target.checked)}
             />
           </div>
         </div>

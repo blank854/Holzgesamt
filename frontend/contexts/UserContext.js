@@ -18,7 +18,11 @@ export const UserProvider = ({ children }) => {
 
   const getUser = () => {
     if (typeof window == 'undefined') return null
-    if (typeof getCookie('user') == 'undefined') return null
+    if (typeof getCookie('user') == 'undefined') {
+      setMessage('Bitte melde dich an, um fortzufahren.')
+      setVariant('warning')
+      return null
+    }
 
     return JSON.parse(getCookie('user'))
   }

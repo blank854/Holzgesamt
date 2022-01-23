@@ -20,7 +20,7 @@ export default searchPage
 
 export async function getServerSideProps(context) {
   let filter = JSON.parse(context.params.search)
-  console.log(filter)
+  console.log(JSON.stringify(filter))
   var config = {
     method: 'get',
     url: 'http://localhost:4000/offer',

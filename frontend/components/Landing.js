@@ -72,8 +72,7 @@ const Landing = () => {
       })
     }
 
-    console.log(filter.filters)
-    // router.push(`/search/${JSON.stringify(filter)}`)
+    router.push(`/search/${JSON.stringify(filter)}`)
   }
   return (
     <div className='Landing d-flex flex-row align-items-center'>

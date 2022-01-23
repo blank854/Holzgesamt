@@ -220,27 +220,36 @@ export async function getServerSideProps(context) {
     data: JSON.stringify(recommendationData),
   }
 
-  productDetail = JSON.stringify(productDetail.data)
+  productDetail = productDetail.data
 
-  // const timeWindowFrom = new Date(productDetail.treeDetail.timeWindow.from)
-  // const timeWindowTill = new Date(productDetail.treeDetail.timeWindow.till)
+  const convertDate = (date) => {
+    const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+    const month =
+      date.getMonth() + 1 < 10
+        ? '0' + (date.getMonth() + 1)
+        : date.getMonth() + 1
+    const year = date.getFullYear()
 
-  // const convertDate = (date) => {
-  //   const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-  //   const month =
-  //     date.getMonth() + 1 < 10
-  //       ? '0' + (date.getMonth() + 1)
-  //       : date.getMonth() + 1
-  //   const year = date.getFullYear()
-  //   const hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours()
-  //   const minutes =
-  //     date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes()
+    return `${day}.${month}.${year}`
+  }
 
-  //   return `${day}.${month}.${year} um ${hours}:${minutes}`
-  // }
+  if (productDetail.treeDetail.timeWindow.restricted) {
+    const timeWindowFrom = new Date(productDetail.treeDetail.timeWindow.from)
+    const timeWindowTill = new Date(productDetail.treeDetail.timeWindow.till)
 
-  // productDetail.treeDetail.timeWindow.from = convertDate(timeWindowFrom)
-  // productDetail.treeDetail.timeWindow.till = convertDate(timeWindowTill)
+    productDetail.treeDetail.timeWindow.from = convertDate(timeWindowFrom)
+    productDetail.treeDetail.timeWindow.till = convertDate(timeWindowTill)
+  }
+
+  if (productDetail.treeDetail.fellingState.felled) {
+    const fellingDate = new Date(
+      productDetail.treeDetail.fellingState.fellingDate
+    )
+
+    productDetail.treeDetail.fellingState.fellingDate = convertDate(fellingDate)
+  }
+
+  productDetail = JSON.stringify(productDetail)
 
   return {
     props: {
