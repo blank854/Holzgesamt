@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dropdown, Form } from 'react-bootstrap'
+import { Col, Dropdown, Form, Row } from 'react-bootstrap'
 import { Range } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
@@ -8,27 +8,20 @@ const PriceRange = ({ priceRange, setPriceRange }) => {
     setPriceRange(e)
   }
   return (
-    <Dropdown autoClose='outside'>
-      <Dropdown.Toggle variant='secondary' id='dropdown-basic'>
-        Preis
-      </Dropdown.Toggle>
-
-      <Dropdown.Menu>
-        <div className='p-3 text-center'>
-          <Range
-            allowCross={false}
-            style={{ minWidth: '15rem' }}
-            min={0}
-            max={500}
-            defaultValue={priceRange}
-            onChange={handlePriceRange}
-          />
-          <div className='mt-2'>
-            <b>{`${priceRange[0]}€ - ${priceRange[1]}€`}</b>
-          </div>
-        </div>
-      </Dropdown.Menu>
-    </Dropdown>
+    <Row>
+      <Col>
+        <Form.Group className='mb-3'>
+          <Form.Label>Mindestpreis</Form.Label>
+          <Form.Control type='number' placeholder='0,00€' name='minPrice' />
+        </Form.Group>
+      </Col>
+      <Col>
+        <Form.Group className='mb-3'>
+          <Form.Label>Maximalpreis</Form.Label>
+          <Form.Control type='number' placeholder='500,00€' name='maxPrice' />
+        </Form.Group>
+      </Col>
+    </Row>
   )
 }
 

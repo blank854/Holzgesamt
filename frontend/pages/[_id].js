@@ -147,7 +147,6 @@ const productDetail = ({ productDetail, API_KEY }) => {
                   Bereits gefällt:{' '}
                   {productDetail.treeDetail.fellingState.felled ? 'Ja' : 'Nein'}
                 </li>
-
                 {productDetail.treeDetail.fellingState.felled ? (
                   <li>
                     Fälldatum:{' '}
@@ -169,8 +168,9 @@ const productDetail = ({ productDetail, API_KEY }) => {
                     ? 'Ja'
                     : 'Nein'}
                 </li>
+
                 {productDetail.treeDetail.timeWindow.restricted ? (
-                  <li>{`${productDetail.treeDetail.timeWindow.from} - ${productDetail.treeDetail.timeWindow.till}`}</li>
+                  <li>{`Maßnahmenzeitraum: ${productDetail.treeDetail.timeWindow.from} - ${productDetail.treeDetail.timeWindow.till}`}</li>
                 ) : (
                   ''
                 )}

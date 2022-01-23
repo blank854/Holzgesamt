@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap'
 
 const ApplyFilter = ({ filterData }) => {
   return (
-    <Button variant='primary' className='mb-3'>
+    <Button variant='primary' type='submit' className='mb-3 w-100'>
       Filter anwenden
     </Button>
   )
