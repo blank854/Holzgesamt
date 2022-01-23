@@ -5,6 +5,7 @@ import Felled from './filters/Felled'
 import Circling from './filters/Circling'
 import Search from './filters/Search'
 import ApplyFilter from './filters/ApplyFilter'
+import SortOrder from './SortOrder'
 
 const Filter = () => {
   const [priceRange, setPriceRange] = useState([0, 500])
@@ -14,6 +15,7 @@ const Filter = () => {
   const [search, setSearch] = useState('')
 
   const [filterData, setFilterData] = useState({})
+  const [order, setOrder] = useState({})
 
   useEffect(() => {
     setFilterData({
@@ -39,13 +41,18 @@ const Filter = () => {
           value: search,
         },
       ],
+      sorter: {
+        'price.priceValue': order,
+      },
     })
-
-    console.log(filterData)
-  }, [priceRange, felled, circling, search, location])
+  }, [priceRange, felled, circling, search, location, order])
   return (
-    <div className='Filter mt-3 d-flex' style={{ gap: '1rem' }}>
-      <PriceRange priceRange={priceRange} setPriceRange={setPriceRange} />
+    <div
+      className='Filter mt-3 d-flex w-100 justifiy-content-end'
+      style={{ gap: '1rem' }}
+    >
+      <SortOrder order={order} />
+      {/* <PriceRange priceRange={priceRange} setPriceRange={setPriceRange} />
       <Felled felled={felled} setFelled={setFelled} />
       <Circling
         circling={circling}
@@ -53,7 +60,7 @@ const Filter = () => {
         setLocation={setLocation}
       />
       <Search search={search} setSearch={setSearch} />
-      <ApplyFilter filterData={filterData} />
+      <ApplyFilter filterData={filterData} /> */}
     </div>
   )
 }

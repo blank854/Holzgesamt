@@ -26,23 +26,20 @@ const ImageGallery = ({ images }) => {
           </Carousel.Item>
         ))}
       </Carousel>
-      <Row className='mt-3'>
+      <div className='mt-3'>
         {images.map((image, index) => (
-          <Col>
-            <img
-              className={`rounded me-2 mb-2 pointer ${
-                index === activeImage ? 'border border-primary' : ''
-              }`}
-              src={image.access}
-              alt='Bilder des Inserats'
-              style={{ objectFit: 'contain', maxHeight: '70px' }}
-              onClick={() => handleSelect(index)}
-              key={index}
-            />
-          </Col>
+          <img
+            className={`rounded me-2 mb-2 pointer d-inline-block w-auto ${
+              index === activeImage ? 'border border-primary' : ''
+            }`}
+            src={image.access}
+            alt='Bilder des Inserats'
+            style={{ objectFit: 'contain', maxHeight: '70px' }}
+            onClick={() => handleSelect(index)}
+            key={index}
+          />
         ))}
-      </Row>
-      {/* <div className='thumbnailContainer d-flex justify-content-center mt-3'></div> */}
+      </div>
     </>
   )
 }
