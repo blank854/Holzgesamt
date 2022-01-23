@@ -90,7 +90,7 @@ router.post('/', authCheck, async(req, res, next) => {
         return
     }
 
-    Offer.findByIdAndUpdate(req.body.offer, {$inc : {'scores.contacts' : 1}})
+    Offer.findByIdAndUpdate(req.body.offer, {$inc : {'scores.contacts' : 1, "scores.scoreRank": 10 }})
         .exec()
 
     const chat = new Chat({

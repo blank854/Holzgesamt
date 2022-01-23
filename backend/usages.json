@@ -1,0 +1,97 @@
+[{
+  "usage": "Schnittholz",
+  "species": ["Feuerahorn", "Berg-Kirsche", "Blut-Pflaume", "Pappel"]
+}, {
+  "usage": "Möbel",
+  "species": ["Bergahorn", "Spitzahorn", "Gemeine-Esche", "Hänge-Esche", "Manna-Esche", "Oregon-Esche", "Rot-Esche", "Schmalblättrige Esche", "Berg-Ulme", "Chinesische Ulme", "Feld-Ulme", "Flatter-Ulme", "Gold-Ulme", "Sibirische Ulme", "Ulme 'Jacqueline Hillier'", "Felsen-Kirsche", "Fuji-Kirsche", "Gemeine Trauben-Kirsche", "Linde", "Elsbeere", "Eberesche", "Speierling", "Apfelbaum", "Birne", "Echte Walnuss", "Sauerkirsche", "Vogelkirsche", "Douglasie", "Fichte", "Kiefer", "Lärche", "Tanne", "Wacholder", "Birke", "Buche", "Eiche", "Kastanie", "Robinie", "Schwarzerle", "Pappel", "Quitte"]
+}, {
+  "usage": "Tischplatten",
+  "species": ["Bergahorn", "Spitzahorn"]
+}, {
+  "usage": "Musikinstrumente",
+  "species": ["Bergahorn", "Spitzahorn", "Amerikanische Eberesche", "Chinesische Blumenesche", "Eberesche", "Einblatt-Esche", "Linde", "Elsbeere", "Eberesche", "Speierling", "Apfelbaum", "Birne", "Echte Walnuss", "Aprikosenbaum", "Sauerkirsche", "Vogelkirsche", "Kultur-Pflaume", "Eibe", "Fichte", "Tanne", "Hainbuche", "Kastanie", "Schwarzerle", "Schwarzer Holunder"]
+}, {
+  "usage": "Schnitzereien",
+  "species": ["Amerikanische Eberesche", "Chinesische Blumenesche", "Eberesche", "Einblatt-Esche", "Felsen-Kirsche", "Graue Kirschmandel", "Linde", "Eberesche", "Speierling", "Birne", "Echte Walnuss", "Aprikosenbaum", "Sauerkirsche", "Vogelkirsche", "Kultur-Pflaume", "Wacholder", "Schwarzerle"]
+}, {
+  "usage": "Drechseln",
+  "species": ["Amerikanische Eberesche", "Chinesische Blumenesche", "Eberesche", "Einblatt-Esche", "Felsen-Kirsche", "Gemeine Trauben-Kirsche", "Graue Kirschmandel", "Hasel", "Linde", "Elsbeere", "Eberesche", "Speierling", "Apfelbaum", "Birne", "Echte Walnuss", "Aprikosenbaum", "Sauerkirsche", "Vogelkirsche", "Kultur-Pflaume", "Eibe", "Wacholder", "Schwarzerle", "Schwarzer Holunder", "Quitte"]
+}, {
+  "usage": "Messinstrumente",
+  "species": ["Amerikanische Eberesche", "Chinesische Blumenesche", "Eberesche", "Einblatt-Esche"]
+}, {
+  "usage": "Rechenschieber",
+  "species": ["Amerikanische Eberesche", "Chinesische Blumenesche", "Eberesche", "Einblatt-Esche"]
+}, {
+  "usage": "Brennholz",
+  "species": ["Erlenblättrige Esche", "Eschen-Ahorn", "Rispiger Blasenbaum", "Samthaarige Stinkesche", "Täuschendes Gelbholz", "Zoeschener Ahorn", "Zwerg-Eberesche", "Japanische Zelkove", "Kleeulme", "Amur-Trauben-Kirsche", "Aprikose", "Davids Pfirsich"]
+}, {
+  "usage": "Intarsien",
+  "species": ["Eschen-Ahorn", "Felsen-Kirsche", "Gemeine Trauben-Kirsche", "Graue Kirschmandel", "Wacholder", "Quitte"]
+}, {
+  "usage": "Faserplatten",
+  "species": ["Eschen-Ahorn"]
+}, {
+  "usage": "Gerätestiele",
+  "species": ["Gemeine-Esche", "Hänge-Esche", "Manna-Esche", "Oregon-Esche", "Rot-Esche", "Schmalblättrige Esche", "Gemeine Trauben-Kirsche"]
+}, {
+  "usage": "Segelpinnen",
+  "species": ["Gemeine-Esche", "Hänge-Esche", "Manna-Esche", "Oregon-Esche", "Rot-Esche", "Schmalblättrige Esche"]
+}, {
+  "usage": "Bogenbau",
+  "species": ["Gemeine-Esche", "Hänge-Esche", "Manna-Esche", "Oregon-Esche", "Rot-Esche", "Schmalblättrige Esche", "Berg-Ulme", "Feld-Ulme", "Flatter-Ulme", "Hasel", "Eibe", "Wacholder", "Robinie"]
+}, {
+  "usage": "Furniere",
+  "species": ["Berg-Ulme", "Feld-Ulme", "Flatter-Ulme", "Gold-Ulme", "Ulme 'Jacqueline Hillier'", "Fuji-Kirsche", "Gemeine Trauben-Kirsche", "Elsbeere", "Echte Walnuss", "Douglasie", "Eibe", "Kiefer", "Birke", "Buche", "Eiche", "Kastanie", "Schwarzerle"]
+}, {
+  "usage": "Parkettboden",
+  "species": ["Chinesische Ulme", "Sibirische Ulme", "Elsbeere", "Douglasie", "Lärche", "Birke", "Buche", "Eiche", "Hainbuche", "Kastanie", "Robinie"]
+}, {
+  "usage": "Spielzeug",
+  "species": ["Chinesische Ulme", "Aprikosenbaum", "Kiefer", "Buche", "Kastanie", "Schwarzerle"]
+}, {
+  "usage": "Pfeifenköpfe",
+  "species": ["Flatter-Ulme"]
+}, {
+  "usage": "Schreibwerkzeuge",
+  "species": ["Flatter-Ulme"]
+}, {
+  "usage": "Kunsthandwerk",
+  "species": ["Sibirische Ulme", "Eberesche", "Apfelbaum", "Schwarzer Holunder", "Quitte"]
+}, {
+  "usage": "Türen",
+  "species": ["Sibirische Ulme"]
+}, {
+  "usage": "Innenausbau",
+  "species": ["Felsen-Kirsche"]
+}, {
+  "usage": "Spazierstöcke",
+  "species": ["Gemeine Trauben-Kirsche", "Hasel"]
+}, {
+  "usage": "Bildhauerei",
+  "species": ["Linde", "Birne"]
+}, {
+  "usage": "Werkzeugbau",
+  "species": ["Speierling", "Hainbuche"]
+}, {
+  "usage": "Gewehrschäfte",
+  "species": ["Echte Walnuss"]
+}, {
+  "usage": "Bauholz",
+  "species": ["Douglasie", "Fichte", "Kiefer", "Lärche", "Tanne"]
+}, {
+  "usage": "Dachstühle",
+  "species": ["Douglasie", "Fichte"]
+}, {
+  "usage": "Räucherwerk",
+  "species": ["Wacholder"]
+}, {
+  "usage": "Eisenbahnschwellen",
+  "species": ["Buche", "Eiche"]
+}, {
+  "usage": "Verpackungen",
+  "species": ["Pappel"]
+}, {
+  "usage": "Holzschuhe",
+  "species": ["Pappel"]
+}]

@@ -112,7 +112,7 @@ router.delete("/favorite", authCheck, (req, res, next) => {
                         .catch(err => { res.status(500).json({ message: "Error while updating user", error: err }); })
             
                     Offer
-                        .findByIdAndUpdate(oID,{$inc : {'scores.favorites' : -1}})
+                        .findByIdAndUpdate(oID,{$inc : {'scores.favorites' : -1, 'scores.scoreRank' : -5}})
                         .exec()
             }
         } catch(e){console.log(e)}   
@@ -168,7 +168,6 @@ router.put("/favorite", authCheck, (req, res, next) => {
             try{
                 const favID = mongoose.Types.ObjectId(req.body.favorite) 
                 let update = []
-                console.log(result)
                 if (result.favorites.length > 0){
                     if (result.favorites.includes(favID )){
                         res.status(200).json({ message: "User already has this offer as favorite" });
@@ -187,8 +186,9 @@ router.put("/favorite", authCheck, (req, res, next) => {
                 .then(result => { ;res.status(200).json({ message: "User updated" }); })
                 .catch(err => { res.status(500).json({ message: "Error while updating user", error: err }); })
             Offer
-                .findByIdAndUpdate(oID,{$inc : {'scores.favorites' : 1}})
+                .findByIdAndUpdate(favID,{$inc : {'scores.favorites' : 1, 'scores.scoreRank' : 5}})
                 .exec()
+                .catch((err)=>{console.log(err)})
         } catch(e){console.log(e)}
         })
         .catch(err => { res.status(500).json({ message: "User not found", error: err }) })

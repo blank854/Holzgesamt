@@ -15,10 +15,10 @@ const Shop = ({ productList }) => {
           {/* <FilterLanding /> */}
           <section className='my-5 text-primary'>
             <h1>
-              <b>Deine Empfehlungen</b>
+              <b>Unsere Empfehlungen</b>
             </h1>
             <p>
-              Basierend auf deinen vorherigen Suchen haben wir Empfehlungen für
+              Hier haben wir Empfehlungen für
               dich zusammengestellt.
             </p>
           </section>

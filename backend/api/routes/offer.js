@@ -4,36 +4,52 @@ const authCheck = require("../middleware/authCheck");
 const Offer = require("../model/offerModel");
 const mongoose = require("mongoose");
 const recommendationEngine = require("../../recommendation/recommendation")
-const EventLog = require('../model/eventModel')
-const jwt = require('jsonwebtoken');
-const axios = require("axios")
+const axios = require("axios");
+const initRecommendation = require("../../recommendation/initRecomm");
+const treeUsages = require("../../usages.json")
 require('dotenv').config()
 
 /**
  * @GET all Offers
+ * @todo: Zip filter
  */
-router.get("/", (req, res, next) => {
-    console.log(req.body)
+router.get("/", async (req, res, next) => {
+   // initRecommendation()
+   
 
     const requestFilters = req.body.filters;
     let sorter = {};
     const requestSearch = req.body.search;
     const requestPaging = req.body.paging;
     const filter = {};
+    const requestUsage = req.body.usage;
     var skip;
     var limit;
 
     if ( typeof requestFilters !== "undefined"){
-        requestFilters.forEach((item, index) => {
+        for (const item of requestFilters) {
             if (item.field === "treeDetail.location"){
-                filter[item.field] = {
-                    $near: {$maxDistance: parseInt(item.maxDistance),
-                            $geometry: {type: "Point",coordinates: item.coordinates}}
-                }
+                const baseURl = `https://maps.googleapis.com/maps/api/geocode/json?address=`
+                const sendURL = `${baseURl}${item.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
+    
+                const googleResponse = await axios({ method: 'get', url:sendURL }).catch((error)=>{ console.log(error);
+                                                                                            res.status(500).json({error:error})
+                                                                                            return});
+                try{
+                    if (googleResponse.data.results.length > 0){
+                        filter[item.field] = {
+                            $near: {$maxDistance: parseInt(item.maxDistance),
+                                    $geometry: {type: "Point",
+                                                coordinates:[   googleResponse.data.results[0].geometry.location.lat,
+                                                                googleResponse.data.results[0].geometry.location.lng]}}
+                        }
+                    }
+                } catch(e){ res.status(500).json({Message:"Postleitzahl-Error",error:e});return}
+                
             } else {
                 filter[item.field] = item.value;
             }
-        })
+          }
     }
     if ( typeof requestSearch !== "undefined"){
         filter["title"] = { $regex: requestSearch.value }
@@ -43,10 +59,25 @@ router.get("/", (req, res, next) => {
         limit = requestPaging.limit
         skip = requestPaging.skip
     }
-    if ( typeof requestPaging !== "undefined"){
+    if ( typeof req.body.sorter !== "undefined"){
         sorter = req.body.sorter
+    }
+
+    if ( typeof requestUsage !== "undefined"){
+       treeUsages.forEach((item, index)=>{
+           if (item.usage == requestUsage){
+              if (filter["treeDetail.species.german"]){
+                filter["treeDetail.species.german"] = [filter["treeDetail.species.german"]].concat(item.species)
+              } else {
+                filter["treeDetail.species.german"] = item.species
+              }  
+           }
+       }) 
     } 
-    //sorter["score.scoreRank"] = -1;
+
+    console.log(filter)
+
+    sorter["scores.scoreRank"] = -1;
 
     Offer
         .find(filter)
@@ -55,7 +86,7 @@ router.get("/", (req, res, next) => {
         .select("_id created lastUpdated treeDetail.species fellingState title price pictures")
         .sort(sorter)
         .exec()
-        .then(offers =>{ res.status(200).json(offers)})
+        .then(offers =>{res.status(200).json(offers)})
         .catch(err => {res.status(500).json({message:"Error while reading offers", error:err})})
 });
 
@@ -67,7 +98,6 @@ router.post("/",authCheck, async (req, res, next) => {
         location = Treedetail.location
     }
     if (Treedetail.location.zip){
-        console.log(Treedetail.location.zip)
         const baseURl = `https://maps.googleapis.com/maps/api/geocode/json?address=`
         const sendURL = `${baseURl}${Treedetail.location.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
     
@@ -158,7 +188,7 @@ router.get("/:offerID", (req, res, next) => {
     const oID = req.params.offerID
     console.log(oID)
     Offer
-        .findByIdAndUpdate(oID,{$inc : {'scores.detailViews' : 1}})
+        .findByIdAndUpdate(oID,{$inc : {'scores.detailViews' : 1, 'scores.scoreRank' : 1} })
         .populate("user","username")
         .populate("recommendations.offer","_id created lastUpdated treeDetail.species fellingState title price pictures")
         .exec()
