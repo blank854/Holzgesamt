@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const authCheck = require('../middleware/authCheck')
 const Offer = require('../model/offerModel')
+const User = require('../model/userModel')
 const mongoose = require('mongoose')
 const recommendationEngine = require('../../recommendation/recommendation')
 const axios = require('axios')
@@ -30,7 +31,31 @@ router.post('/getAll', async (req, res, next) => {
     for (const item of requestFilters) {
       if (item.field === 'treeDetail.location') {
         const baseURl = `https://maps.googleapis.com/maps/api/geocode/json?address=`
-        const sendURL = `${baseURl}${item.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
+        const sendURL = `${baseURl}${Treedetail.location.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
+
+        const googleResponse = await axios({
+          method: 'get',
+          url: sendURL,
+        }).catch((error) => {
+          console.log(error)
+          res.status(500).json({ error: error })
+          return
+        })
+
+        try {
+          if (googleResponse.data.results.length > 0) {
+            location = {
+              type: 'Point',
+              coordinates: [
+                googleResponse.data.results[0].geometry.location.lat,
+                googleResponse.data.results[0].geometry.location.lng,
+              ],
+            }
+          }
+        } catch (e) {
+          res.status(500).json({ Message: 'Postleitzahl-Error', error: e })
+          return
+        }
 
         const googleResponse = await axios({
           method: 'get',
@@ -174,9 +199,21 @@ router.post('/', authCheck, async (req, res, next) => {
 
   offer
     .save()
-    .then((offerResult) => {
-      recommendationEngine(offerResult)
-      res.status(200).json({ offerResult })
+    .then(async (offerResult) => {
+      try {
+        recommendationEngine(offerResult)
+        res.status(200).json({ offerResult })
+        const postUser = await User.findById(req.authUserData.userId).exec()
+        if (Array.isArray(postUser.offers)) {
+          postUser.offers.push(offerResult._id)
+        } else {
+          postUser.offers[0] = offerResult._id
+        }
+        const updateUser = { offers: postUser.offers }
+        User.findByIdAndUpdate(req.authUserData.userId, updateUser).exec()
+      } catch (e) {
+        console.log(e)
+      }
     })
     .catch((err) => {
       res.status(500).json({ message: 'Error while saving offers', error: err })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   ButtonGroup,
@@ -7,8 +7,10 @@ import {
   Dropdown,
   Form,
   Row,
+  ListGroup,
 } from 'react-bootstrap'
 import Slider from 'rc-slider'
+import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useFilter } from '../contexts/FilterContext'
 import {
@@ -34,11 +36,62 @@ const Landing = () => {
     setFelled(e)
   }
 
+  const handleSearchUsage = (e) => {
+    setSelectedUsage(e.target.value)
+    console.log(usages)
+    let tmpSearchUsage = usages.filter((item) => item.includes(e.target.value))
+    setSearchUsage(tmpSearchUsage)
+  }
+
+  const handleClickUsage = (e) => {
+    setSelectedUsage(e)
+    setShowAutocomplete(false)
+  }
+  const handleOnBlur = (e) => {
+    if (e.relatedTarget) {
+      if (e.relatedTarget.parentElement.id !== 'ListGroupUsages') {
+        setShowAutocomplete(false)
+      }
+    } else {
+      setShowAutocomplete(false)
+    }
+  }
+
+  useEffect(() => {
+    const config = {
+      method: 'get',
+      url: 'http://localhost:4000/statistics/usages',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+    axios(config).then((response) => {
+      setUsages(response.data.SendUsages)
+    })
+  }, [])
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
+
+    const filter = {
+      filters: [],
+      sorter: {
+        'price.priceValue': '-1',
+      },
+      paging: {
+        limit: 25,
+        skip: 0,
+      },
+      usage: [],
+    }
+
+    if (formDataObj.usage) {
+      filter.usage.push(formDataObj.usage)
+    }
+    console.log(filter)
 
     if (formDataObj.search) {
       setSearch(formDataObj.search)
@@ -73,7 +126,7 @@ const Landing = () => {
               </b>
             </h2>
 
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} autocomplete='off'>
               <div className='d-flex flex-row align-items-center mb-3'>
                 <i className='fas fa-search pe-3'></i>
                 <Form.Control
@@ -126,6 +179,42 @@ const Landing = () => {
                       placeholder='z.B. bis 500€'
                       name='price'
                     />
+                  </div>
+                </Col>
+
+                <Col md={6}>
+                  <div className='d-flex flex-row align-items-center mb-3 position-relative'>
+                    <i className='fas fa-space-shuttle pe-3'></i>
+                    <div>
+                      <Form.Control
+                        className=' w-100'
+                        type='usage'
+                        placeholder='Verwendungszweck'
+                        name='usage'
+                        onFocus={() => setShowAutocomplete(true)}
+                        onBlur={handleOnBlur}
+                        onChange={handleSearchUsage}
+                        value={selectedUsage}
+                      />
+                      <ListGroup
+                        className={`position-absolute w-100 ${
+                          !showAutocomplete ? 'd-none' : ''
+                        }`}
+                        id='ListGroupUsages'
+                        style={{ zIndex: '9999' }}
+                      >
+                        {searchUsage.map((item, index) => (
+                          <ListGroup.Item
+                            key={index}
+                            onClick={() => handleClickUsage(item)}
+                            tabIndex='-1'
+                            className='pointer'
+                          >
+                            {item}
+                          </ListGroup.Item>
+                        ))}
+                      </ListGroup>
+                    </div>
                   </div>
                 </Col>
                 <Col md={6}>
