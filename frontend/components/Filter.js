@@ -43,6 +43,7 @@ const Filter = ({ filter }) => {
     }
 
     if (felled == 1 || felled == 2) {
+
       filter.filters.push({
         field: 'treeDetail.fellingState.felled',
         value: felled === 1 ? true : false,

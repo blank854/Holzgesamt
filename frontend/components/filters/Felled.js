@@ -5,8 +5,10 @@ const Felled = ({ felled, setFelled }) => {
   const handleSwitchChange = (e) => {
     if (e.target.checked) {
       setFelled(true)
+      console.log(felled)
     } else {
       setFelled(false)
+      console.log(felled)
     }
   }
   return (

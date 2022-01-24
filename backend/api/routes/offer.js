@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authCheck = require("../middleware/authCheck");
 const Offer = require("../model/offerModel");
+const User = require("../model/userModel");
 const mongoose = require("mongoose");
 const recommendationEngine = require("../../recommendation/recommendation")
 const axios = require("axios");
@@ -15,13 +16,13 @@ require('dotenv').config()
  */
 router.get("/", async (req, res, next) => {
    // initRecommendation()
-   
+   console.log(req.body)
 
     const requestFilters = req.body.filters;
     let sorter = {};
     const requestSearch = req.body.search;
     const requestPaging = req.body.paging;
-    const filter = {};
+    let filter = {};
     const requestUsage = req.body.usage;
     var skip;
     var limit;
@@ -52,8 +53,10 @@ router.get("/", async (req, res, next) => {
           }
     }
     if ( typeof requestSearch !== "undefined"){
-        filter["title"] = { $regex: requestSearch.value }
-        filter["description"] = { $regex: requestSearch.value }
+        // filter = {  ...filter
+        //             { "$or": [ title:{ $regex: requestSearch.value }, description:{ $regex: requestSearch.value }]}}
+        filter["title"] = { $regex: requestSearch.value, $options: 'i' }
+        filter["description"] = { $regex: requestSearch.value, $options: 'i' }
     }
     if ( typeof requestPaging !== "undefined"){
         limit = requestPaging.limit
@@ -104,7 +107,7 @@ router.post("/",authCheck, async (req, res, next) => {
         const googleResponse = await axios({ method: 'get', url:sendURL }).catch((error)=>{ console.log(error);
                                                                                             res.status(500).json({error:error})
                                                                                             return});
-                                                                                            console.log(googleResponse)
+
         try{
             if (googleResponse.data.results.length > 0){
             location = {
@@ -143,8 +146,23 @@ router.post("/",authCheck, async (req, res, next) => {
 
     offer
     .save()
-    .then(offerResult => {  recommendationEngine(offerResult)
-                            res.status(200).json({offerResult});})
+    .then(async offerResult => {  
+        try{
+            recommendationEngine(offerResult)
+            res.status(200).json({offerResult});
+            const postUser = await User.findById(req.authUserData.userId).exec()
+            if (Array.isArray(postUser.offers)) {
+                postUser.offers.push(offerResult._id)
+            } else {
+                postUser.offers[0] = offerResult._id
+            }
+            const updateUser = {offers : postUser.offers}
+            User.findByIdAndUpdate(req.authUserData.userId,updateUser).exec()
+        } catch(e){
+            console.log(e)
+        }
+        
+    })
     .catch(err => {res.status(500).json({message:"Error while saving offers", error:err})})
 });
 

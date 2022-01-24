@@ -142,7 +142,7 @@ const createAdvert = () => {
   }
 
   const handleFileUpload = (e) => {
-    console.log('Hallo')
+
     setLoading(true)
     setFile(e.target.files[0])
   }
@@ -154,8 +154,17 @@ const createAdvert = () => {
     )
     setSearchSpecies(tmpSearchSpecies)
   }
-
+  const handleOnBlur = (e) =>{
+    if (e.relatedTarget){
+      if (e.relatedTarget.parentElement.id !== "ListGroupSpecies"){
+        setShowAutocomplete(false)
+      }
+    } else {
+      setShowAutocomplete(false)
+    }
+  }
   const handleClickSpecies = (e) => {
+
     console.log(e)
     setSelectedSpecies(e)
     setShowAutocomplete(false)
@@ -465,10 +474,12 @@ const createAdvert = () => {
                         name='species'
                         required
                         onFocus={() => setShowAutocomplete(true)}
+                        onBlur={handleOnBlur}
                         onChange={handleSearchSpecies}
                         value={selectedSpecies}
                       />
                       <ListGroup
+                        id="ListGroupSpecies"
                         className={`position-absolute w-100 ${
                           !showAutocomplete ? 'd-none' : ''
                         }`}
@@ -479,6 +490,7 @@ const createAdvert = () => {
                             onClick={() =>
                               handleClickSpecies(tree.treeSpeciesGerman)
                             }
+                            tabIndex = "-1"
                             className='pointer'
                           >
                             {tree.treeSpeciesGerman}

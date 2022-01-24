@@ -134,7 +134,7 @@ router.post('/', authCheck, async(req, res, next) => {
                                     userResult2.chats[0] = chatResult._id
                                 }
                                 const update = {
-                                    chats: userResult.chats,
+                                    chats: userResult2.chats,
                                 }
                                 User.findByIdAndUpdate(chatResult.reciever, update)
                                     .exec()

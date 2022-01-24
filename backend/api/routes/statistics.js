@@ -3,6 +3,7 @@ const router = express.Router()
 const mongoose = require('mongoose')
 const Offer = require('../model/offerModel')
 const treeJSON = require('../../treeSpecies.json')
+const Usages = require('../../usages.json')
 
 router.get('/maximalPrice', (req, res, next) => {
   Offer.findMax()
@@ -19,6 +20,14 @@ router.get('/maximalPrice', (req, res, next) => {
 })
 router.get('/treeSpecies', (req, res, next) => {
   res.status(200).json({ treeJSON })
+})
+router.get('/usages', (req, res, next) => {
+  const SendUsages = [];
+  Usages.forEach((item,index)=>{
+    SendUsages.push(item.usage)
+  })
+  SendUsages.sort()
+  res.status(200).json({ SendUsages })
 })
 
 router.get('/treeSpecies/:filterString', (req, res, next) => {
