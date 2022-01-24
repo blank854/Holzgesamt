@@ -25,7 +25,10 @@ const Landing = () => {
   const router = useRouter()
   const [circling, setCircling] = useState(150)
   const [felled, setFelled] = useState(0)
-
+  const [usages, setUsages] = useState([])
+  const [searchUsage, setSearchUsage] = useState([])
+  const [selectedUsage, setSelectedUsage] = useState('')
+  const [showAutocomplete, setShowAutocomplete] = useState(false)
   const { addFilter, setSearch } = useFilter()
 
   const handleCircling = (e) => {

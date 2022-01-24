@@ -16,13 +16,13 @@ require('dotenv').config()
  */
 router.post('/getAll', async (req, res, next) => {
   // initRecommendation()
-
   console.log(req.body)
+
   const requestFilters = req.body.filters
   let sorter = {}
   const requestSearch = req.body.search
   const requestPaging = req.body.paging
-  const filter = {}
+  let filter = {}
   const requestUsage = req.body.usage
   var skip
   var limit
@@ -31,31 +31,7 @@ router.post('/getAll', async (req, res, next) => {
     for (const item of requestFilters) {
       if (item.field === 'treeDetail.location') {
         const baseURl = `https://maps.googleapis.com/maps/api/geocode/json?address=`
-        const sendURL = `${baseURl}${Treedetail.location.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
-
-        const googleResponse = await axios({
-          method: 'get',
-          url: sendURL,
-        }).catch((error) => {
-          console.log(error)
-          res.status(500).json({ error: error })
-          return
-        })
-
-        try {
-          if (googleResponse.data.results.length > 0) {
-            location = {
-              type: 'Point',
-              coordinates: [
-                googleResponse.data.results[0].geometry.location.lat,
-                googleResponse.data.results[0].geometry.location.lng,
-              ],
-            }
-          }
-        } catch (e) {
-          res.status(500).json({ Message: 'Postleitzahl-Error', error: e })
-          return
-        }
+        const sendURL = `${baseURl}${item.zip}&region=DE&key=${process.env.GOOGLE_API_KEY}`
 
         const googleResponse = await axios({
           method: 'get',
@@ -90,8 +66,10 @@ router.post('/getAll', async (req, res, next) => {
     }
   }
   if (typeof requestSearch !== 'undefined') {
-    filter['title'] = { $regex: requestSearch.value }
-    filter['description'] = { $regex: requestSearch.value }
+    // filter = {  ...filter
+    //             { "$or": [ title:{ $regex: requestSearch.value }, description:{ $regex: requestSearch.value }]}}
+    filter['title'] = { $regex: requestSearch.value, $options: 'i' }
+    filter['description'] = { $regex: requestSearch.value, $options: 'i' }
   }
   if (typeof requestPaging !== 'undefined') {
     limit = requestPaging.limit
@@ -154,7 +132,7 @@ router.post('/', authCheck, async (req, res, next) => {
         return
       }
     )
-    console.log(googleResponse)
+
     try {
       if (googleResponse.data.results.length > 0) {
         location = {
