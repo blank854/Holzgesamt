@@ -10,6 +10,12 @@ import {
 } from 'react-bootstrap'
 import Slider from 'rc-slider'
 import { useRouter } from 'next/router'
+import { useFilter } from '../contexts/FilterContext'
+import {
+  FELLING_STATE,
+  LOCATION,
+  PRICE_VALUE,
+} from '../constants/filter_constants'
 
 const FELLED_VALUES = ['Fällstatus', 'Bereits gefällt', 'Nicht gefällt', 'Egal']
 
@@ -17,6 +23,9 @@ const Landing = () => {
   const router = useRouter()
   const [circling, setCircling] = useState(150)
   const [felled, setFelled] = useState(0)
+
+  const { addFilter, setSearch } = useFilter()
+
   const handleCircling = (e) => {
     setCircling(e)
   }
@@ -31,48 +40,25 @@ const Landing = () => {
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
 
-    const filter = {
-      filters: [],
-      sorter: {
-        'price.priceValue': '-1',
-      },
-      paging: {
-        limit: 25,
-        skip: 0,
-      },
-    }
-
     if (formDataObj.search) {
-      filter.search = {
-        value: formDataObj.search,
-      }
+      setSearch(formDataObj.search)
     }
 
     if (formDataObj.zip) {
-      filter.filters.push({
-        field: 'treeDetail.location',
+      addFilter(LOCATION, {
         maxDistance: circling * 1000,
         zip: formDataObj.zip,
       })
     }
 
     if (formDataObj.price) {
-      filter.filters.push({
-        field: 'price.priceValue',
-        value: {
-          $lte: formDataObj.price,
-        },
-      })
+      addFilter(PRICE_VALUE, { maxPrice: formDataObj.price })
     }
 
     if (felled == 1 || felled == 2) {
-      filter.filters.push({
-        field: 'treeDetail.fellingState.felled',
-        value: felled === 1 ? true : false,
-      })
+      addFilter(FELLING_STATE, { felled: felled == 1 ? true : false })
     }
-
-    router.push(`/search/${JSON.stringify(filter)}`)
+    router.push(`/search`)
   }
   return (
     <div className='Landing d-flex flex-row align-items-center'>

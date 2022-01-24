@@ -17,10 +17,7 @@ const Shop = ({ productList }) => {
             <h1>
               <b>Unsere Empfehlungen</b>
             </h1>
-            <p>
-              Hier haben wir Empfehlungen für
-              dich zusammengestellt.
-            </p>
+            <p>Hier haben wir Empfehlungen für dich zusammengestellt.</p>
           </section>
           <ItemList productList={JSON.parse(productList)} />
         </Container>
@@ -41,8 +38,8 @@ export async function getServerSideProps(context) {
     },
   }
   var config = {
-    method: 'get',
-    url: 'http://localhost:4000/offer',
+    method: 'post',
+    url: 'http://localhost:4000/offer/getAll',
     headers: {
       'Content-Type': 'application/json',
     },

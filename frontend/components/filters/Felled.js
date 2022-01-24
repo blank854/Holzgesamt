@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Dropdown, Form } from 'react-bootstrap'
+import { FELLING_STATE } from '../../constants/filter_constants'
+import { useFilter } from '../../contexts/FilterContext'
 
-const Felled = ({ felled, setFelled }) => {
+const Felled = () => {
+  const { getFilter } = useFilter()
+  const [felled, setFelled] = useState(
+    getFilter(FELLING_STATE) && getFilter(FELLING_STATE).value
+  )
+
   const handleSwitchChange = (e) => {
-    if (e.target.checked) {
-      setFelled(true)
-    } else {
-      setFelled(false)
-    }
+    setFelled(e.target.checked)
   }
   return (
     <div className='p-3 text-center'>
@@ -17,6 +20,7 @@ const Felled = ({ felled, setFelled }) => {
         label={felled ? 'Baum bereits gefällt' : 'Baum nicht gefällt'}
         onChange={handleSwitchChange}
         name='felled'
+        checked={felled}
       />
     </div>
   )
