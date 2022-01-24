@@ -21,11 +21,22 @@ export const FilterProvider = ({ children }) => {
       limit: 10,
       skip: 0,
     },
+    usage: [],
   })
   const [loading, setLoading] = useState()
 
   const getAllFilters = () => {
     return filter
+  }
+
+  const addUsage = (usage) => {
+    let tmpFilter = filter
+    tmpFilter.usage[0] = usage
+  }
+
+  const getUsage = (usage) => {
+    let tmpFilter = filter
+    return tmpFilter.usage[0]
   }
 
   const getFilter = (payload) => {
@@ -165,6 +176,8 @@ export const FilterProvider = ({ children }) => {
     previousPage,
     setPage,
     getPage,
+    addUsage,
+    getUsage,
   }
 
   return (

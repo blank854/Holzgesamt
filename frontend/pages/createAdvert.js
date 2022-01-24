@@ -8,6 +8,7 @@ import axios from 'axios'
 import { useUser } from '../contexts/UserContext'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { useMessage } from '../contexts/MessageContext'
+import AutoComplete from '../components/AutoComplete'
 
 const createAdvert = () => {
   const { getUser } = useUser()
@@ -28,10 +29,7 @@ const createAdvert = () => {
   ])
   const [latinSpeciesColor, setLatinSpeciesColor] = useState('')
   const [selectedQualities, setSelectedQualities] = useState('')
-  const [selectedSpecies, setSelectedSpecies] = useState('')
   const [species, setSpecies] = useState([])
-  const [searchSpecies, setSearchSpecies] = useState([])
-  const [showAutocomplete, setShowAutocomplete] = useState(false)
   const [latinSpecies, setLatinSpecies] = useState('')
 
   const handleAddQuality = (Quality) => {
@@ -128,7 +126,6 @@ const createAdvert = () => {
         setPriceType(e.target.reset())
         setImgPaths([])
         setLatinSpecies(e.target.reset())
-        setSelectedSpecies(e.target.reset())
         setSelectedQualities(e.target.reset())
         setRestricted(e.target.reset())
         setFelled(e.target.reset())
@@ -142,32 +139,8 @@ const createAdvert = () => {
   }
 
   const handleFileUpload = (e) => {
-
     setLoading(true)
     setFile(e.target.files[0])
-  }
-
-  const handleSearchSpecies = (e) => {
-    setSelectedSpecies(e.target.value)
-    let tmpSearchSpecies = species.filter((tree) =>
-      tree.treeSpeciesGerman.includes(e.target.value)
-    )
-    setSearchSpecies(tmpSearchSpecies)
-  }
-  const handleOnBlur = (e) =>{
-    if (e.relatedTarget){
-      if (e.relatedTarget.parentElement.id !== "ListGroupSpecies"){
-        setShowAutocomplete(false)
-      }
-    } else {
-      setShowAutocomplete(false)
-    }
-  }
-  const handleClickSpecies = (e) => {
-
-    console.log(e)
-    setSelectedSpecies(e)
-    setShowAutocomplete(false)
   }
 
   const handleIdentify = (e) => {
@@ -237,8 +210,11 @@ const createAdvert = () => {
       },
     }
     axios(config).then((response) => {
-      setSpecies(response.data.treeJSON)
-      console.log(response.data.treeJSON)
+      let tmpSpecies = []
+      response.data.treeJSON.map((item) => {
+        tmpSpecies.push(item.treeSpeciesGerman)
+      })
+      setSpecies(tmpSpecies)
     })
   }, [])
 
@@ -468,35 +444,11 @@ const createAdvert = () => {
                       Baumspezies <span className='text-danger'> * </span>
                     </Form.Label>
                     <Col sm={6} className='position-relative'>
-                      <Form.Control
-                        type='species'
-                        placeholder='Spezies'
+                      <AutoComplete
+                        list={species}
                         name='species'
-                        required
-                        onFocus={() => setShowAutocomplete(true)}
-                        onBlur={handleOnBlur}
-                        onChange={handleSearchSpecies}
-                        value={selectedSpecies}
+                        placeholder='Spezies'
                       />
-                      <ListGroup
-                        id="ListGroupSpecies"
-                        className={`position-absolute w-100 ${
-                          !showAutocomplete ? 'd-none' : ''
-                        }`}
-                      >
-                        {searchSpecies.map((tree, index) => (
-                          <ListGroup.Item
-                            key={index}
-                            onClick={() =>
-                              handleClickSpecies(tree.treeSpeciesGerman)
-                            }
-                            tabIndex = "-1"
-                            className='pointer'
-                          >
-                            {tree.treeSpeciesGerman}
-                          </ListGroup.Item>
-                        ))}
-                      </ListGroup>
                     </Col>
                   </Form.Group>
                   <Form.Group

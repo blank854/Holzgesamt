@@ -5,13 +5,17 @@ import Filter from '../components/Filter'
 import ItemList from '../components/ItemList'
 import Layout from '../components/Layout'
 import { useFilter } from '../contexts/FilterContext'
+import { useMessage } from '../contexts/MessageContext'
 
 const searchPage = () => {
   const [searchResult, setSearchResult] = useState([])
   const [changed, setChanged] = useState(false)
   const { getAllFilters } = useFilter()
+  const { setMessage } = useMessage()
 
   useEffect(() => {
+    setMessage('')
+
     const config = {
       method: 'post',
       url: 'http://localhost:4000/offer/getAll',

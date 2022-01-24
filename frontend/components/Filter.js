@@ -5,6 +5,7 @@ import Felled from './filters/Felled'
 import Circling from './filters/Circling'
 import Search from './filters/Search'
 import ApplyFilter from './filters/ApplyFilter'
+import Usage from './filters/Usage'
 import SortOrder from './SortOrder'
 import { Button, Form, Offcanvas } from 'react-bootstrap'
 import axios from 'axios'
@@ -19,7 +20,7 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
   const [order, setOrder] = useState({})
   const [showFilter, setShowFilter] = useState(false)
 
-  const { addFilter, getAllFilters } = useFilter()
+  const { addFilter, getAllFilters, addUsage } = useFilter()
 
   const handleFilterSubmit = (e) => {
     e.preventDefault()
@@ -51,6 +52,10 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
       addFilter(FELLING_STATE, {
         felled: formDataObj.felled === 'on' ? true : false,
       })
+    }
+
+    if (formDataObj.usage) {
+      addUsage(formDataObj.usage)
     }
 
     const config = {
@@ -104,6 +109,11 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
                 <b>Umkreis</b>
               </h6>
               <Circling />
+              <hr />
+              <h6>
+                <b>Verwendungszweck</b>
+              </h6>
+              <Usage />
               <hr />
               <ApplyFilter />
             </Form>
