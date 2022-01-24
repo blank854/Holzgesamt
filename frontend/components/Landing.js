@@ -25,16 +25,11 @@ const FELLED_VALUES = ['Fällstatus', 'Bereits gefällt', 'Nicht gefällt', 'Ega
 const Landing = () => {
   const router = useRouter()
   const [circling, setCircling] = useState(150)
-  const [felled, setFelled] = useState(0)
   const [usages, setUsages] = useState([])
   const { addFilter, setSearch, addUsage } = useFilter()
 
   const handleCircling = (e) => {
     setCircling(e)
-  }
-
-  const handleSetFelled = (e) => {
-    setFelled(e)
   }
 
   useEffect(() => {
@@ -73,10 +68,6 @@ const Landing = () => {
 
     if (formDataObj.price) {
       addFilter(PRICE_VALUE, { maxPrice: formDataObj.price })
-    }
-
-    if (felled == 1 || felled == 2) {
-      addFilter(FELLING_STATE, { felled: felled == 1 ? true : false })
     }
 
     if (formDataObj.usage) {
@@ -161,36 +152,6 @@ const Landing = () => {
                       name='usages'
                       placeholder='Verwendungszweck'
                     />
-                  </div>
-                </Col>
-                <Col md={6}>
-                  <div className='d-flex flex-row align-items-center mb-3'>
-                    <i className='fas fa-tree pe-3'></i>
-                    <Dropdown
-                      onSelect={handleSetFelled}
-                      className='w-100'
-                      align='end'
-                    >
-                      <Dropdown.Toggle
-                        variant='dark'
-                        id='dropdown-felled'
-                        className='w-100'
-                      >
-                        {FELLED_VALUES[felled]}
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item eventKey={1}>
-                          {FELLED_VALUES[1]}
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey={2}>
-                          {FELLED_VALUES[2]}
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey={3}>
-                          {FELLED_VALUES[3]}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
                   </div>
                 </Col>
               </Row>
