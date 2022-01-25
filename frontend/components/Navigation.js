@@ -63,7 +63,7 @@ const Navigation = () => {
                           }}
                           variant='link'
                         >
-                          Noch kein Acount?{' '}
+                          Noch kein Account?{' '}
                           <span className='link-primary'>
                             Jetzt registrieren.
                           </span>

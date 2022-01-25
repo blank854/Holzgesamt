@@ -31,7 +31,7 @@ const Login = ({ setShowDropdown }) => {
       <Form onSubmit={handleLogin}>
         {message !== '' ? <Alert variant='warning'>{message}</Alert> : ''}
         <Form.Group className='mb-2' controlId='emailLogin'>
-          <Form.Label>E-Mail Adresse</Form.Label>
+          <Form.Label>E-Mail-Adresse</Form.Label>
           <Form.Control
             type='email'
             placeholder='max@muster.com'

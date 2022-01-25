@@ -82,7 +82,7 @@ const Landing = () => {
           <Col lg={5} md={8} className='p-4 bg-light text-primary rounded'>
             <h2 className='mb-4'>
               <b>
-                Der Passende Baum.
+                Der passende Baum.
                 <br />
                 Für jedes Projekt.
               </b>
