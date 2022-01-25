@@ -48,7 +48,9 @@ export async function getServerSideProps(context) {
 
   let productList = await axios(config)
 
-  productList = JSON.stringify(productList.data)
+  productList = productList.data.slice(0, 4)
+
+  productList = JSON.stringify(productList)
 
   return { props: { productList } }
 }
