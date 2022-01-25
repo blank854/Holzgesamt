@@ -32,9 +32,10 @@ export const FilterProvider = ({ children }) => {
   const addUsage = (usage) => {
     let tmpFilter = filter
     tmpFilter.usage[0] = usage
+    setFilter(tmpFilter)
   }
 
-  const getUsage = (usage) => {
+  const getUsage = () => {
     let tmpFilter = filter
     return tmpFilter.usage[0]
   }

@@ -51,8 +51,8 @@ const Landing = () => {
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
 
-    if (formDataObj.usage) {
-      addUsage(formDataObj.usage)
+    if (formDataObj.usages) {
+      addUsage(formDataObj.usages)
     }
 
     if (formDataObj.search) {
@@ -88,7 +88,7 @@ const Landing = () => {
               </b>
             </h2>
 
-            <Form onSubmit={handleSubmit} autocomplete='off'>
+            <Form onSubmit={handleSubmit} autoComplete='off'>
               <div className='d-flex flex-row align-items-center mb-3'>
                 <i className='fas fa-search pe-3'></i>
                 <Form.Control
