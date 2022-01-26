@@ -8,6 +8,8 @@ const identifyRoutes = require("./api/routes/identify");
 const bodyParser = require("body-parser");
 const Mongoose = require("mongoose");
 const statisticsRoutes = require("./api/routes/statistics");
+const clean = require("./clean")
+const CronJob = require('cron').CronJob;
 require('dotenv').config()
 
 Mongoose.connect(process.env.MONGODBACCESS).catch(err => { console.log("Error") });
@@ -35,4 +37,6 @@ expressServer.use('/statistics', statisticsRoutes);
 
 expressServer.listen(process.env.REST_API_PORT, () => {
     console.log(`Server running on port ${process.env.REST_API_PORT}`);
+    // const backgroundJob = new CronJob('0 0  * * *',  clean());
+    // backgroundJob.start();
 });

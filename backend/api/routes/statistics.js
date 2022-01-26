@@ -48,10 +48,7 @@ router.get('/treeSpecies/:filterString', (req, res, next) => {
 })
 
 router.get('/test', (req, res, next) => {
-    const password = 'Password01!'
-    const re = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-    password.match(re)
-    console.log( re.test(password))
+clean()
 res.status(200).json({})
 })
 
