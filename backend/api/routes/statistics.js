@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const Offer = require('../model/offerModel')
 const treeJSON = require('../../treeSpecies.json')
 const Usages = require('../../usages.json')
-const clean = require("../../clean");
+const clean = require("../../recommendation/initRecomm");
 
 router.get('/maximalPrice', (req, res, next) => {
     Offer.findMax()
@@ -49,7 +49,8 @@ router.get('/treeSpecies/:filterString', (req, res, next) => {
 
 router.get('/test', (req, res, next) => {
 clean()
-res.status(200)
+res.status(200).json({})
 })
 
 module.exports = router
+  

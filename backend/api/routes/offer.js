@@ -24,6 +24,8 @@ router.post('/getAll', async(req, res, next) => {
     const requestSearch = req.body.search
     const requestPaging = req.body.paging
     let filter = {}
+    let filterOr = [];
+    let filterAnd = [];
     const requestUsage = req.body.usage
     var skip
     var limit
@@ -44,33 +46,33 @@ router.post('/getAll', async(req, res, next) => {
                 })
                 try {
                     if (googleResponse.data.results.length > 0) {
-                        filter[item.field] = {
-                            $near: {
-                                $maxDistance: parseInt(item.maxDistance),
-                                $geometry: {
-                                    type: 'Point',
-                                    coordinates: [
-                                        googleResponse.data.results[0].geometry.location.lat,
-                                        googleResponse.data.results[0].geometry.location.lng,
-                                    ],
+                        filterAnd.push({
+                            [item.field] : {
+                                $near: {
+                                    $maxDistance: parseInt(item.maxDistance),
+                                    $geometry: {
+                                        type: 'Point',
+                                        coordinates: [
+                                            googleResponse.data.results[0].geometry.location.lat,
+                                            googleResponse.data.results[0].geometry.location.lng,
+                                        ],
+                                    },
                                 },
-                            },
-                        }
+                            }
+                        })
                     }
                 } catch (err) {
                     res.status(500).json({ message: 'Postleitzahl-Error', error: err })
                     return
                 }
             } else {
-                filter[item.field] = item.value
+                filterAnd.push({[item.field] : item.value})
             }
         }
     }
     if (typeof requestSearch !== 'undefined') {
-        // filter = {  ...filter
-        //             { "$or": [ title:{ $regex: requestSearch.value }, description:{ $regex: requestSearch.value }]}}
-        filter['title'] = { $regex: requestSearch.value, $options: 'i' }
-        filter['description'] = { $regex: requestSearch.value, $options: 'i' }
+        filterOr.push({'title' : { $regex: requestSearch.value, $options: 'i'} })
+        filterOr.push({'description' : { $regex: requestSearch.value, $options: 'i'} })
     }
     if (typeof requestPaging !== 'undefined') {
         limit = requestPaging.limit
@@ -93,7 +95,8 @@ router.post('/getAll', async(req, res, next) => {
             }
         })
     }
-
+    if (filterOr.length > 0) filter["$or"] = filterOr;
+    if (filterAnd.length > 0) filter["$and"] = filterAnd;
     console.log(filter)
 
     sorter['scores.scoreRank'] = -1
