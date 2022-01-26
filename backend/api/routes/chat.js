@@ -128,11 +128,14 @@ router.post('/', authCheck, async(req, res, next) => {
                         User.findById(chatResult.reciever)
                             .exec()
                             .then((userResult2) => {
-                                if (Array.isArray(userResult2.chats)) {
-                                    userResult2.chats.push(chatResult._id)
-                                } else {
-                                    userResult2.chats[0] = chatResult._id
+                                if (!userResult2._id.equals(userResult._id)){
+                                    if (Array.isArray(userResult2.chats)) {
+                                        userResult2.chats.push(chatResult._id)
+                                    } else {
+                                        userResult2.chats[0] = chatResult._id
+                                    }
                                 }
+                               
                                 const update = {
                                     chats: userResult2.chats,
                                 }
