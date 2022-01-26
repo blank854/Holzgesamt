@@ -12,14 +12,8 @@ const Layout = ({ children, container = true }) => {
   return (
     <>
       <Navigation />
-      {container ? (
-        <Container>
-          {message !== '' ? <ErrorMessage /> : ''}
-          {children}
-        </Container>
-      ) : (
-        <>{children}</>
-      )}
+      <Container>{message !== '' ? <ErrorMessage /> : ''}</Container>
+      {container ? <Container>{children}</Container> : <>{children}</>}
       {loggedIn ? <Chat /> : ''}
     </>
   )

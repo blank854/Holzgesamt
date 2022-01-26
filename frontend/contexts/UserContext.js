@@ -79,8 +79,9 @@ export const UserProvider = ({ children }) => {
         setMessage('')
       })
       .catch((e) => {
+        console.log(e.response)
         setMessage(e.response.data.message)
-        setVariant('danger')
+        setVariant('warning')
       })
   }
 
