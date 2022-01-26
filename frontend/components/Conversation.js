@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap'
 import { useChat } from '../contexts/ChatContext'
 import { useUser } from '../contexts/UserContext'
@@ -17,24 +17,26 @@ const Conversation = ({ productDetail }) => {
     messages,
   } = useChat()
   const [conversationInfo, setConversationInfo] = useState({})
+  const [message, setMessage] = useState('')
+  const formRef = useRef()
 
-  const handleSendMessage = async (e) => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    const formDataObj = Object.fromEntries(formData.entries())
-
+  const handleSendMessage = async () => {
     if (newChat) {
-      await createChat(productDetail, formDataObj.message)
+      await createChat(productDetail, message)
     } else {
-      await sendMessage(formDataObj.message)
+      await sendMessage(message)
     }
 
-    e.target.reset()
+    setMessage('')
     getMessages()
   }
   const handleGoBack = () => {
     setConversation(false)
     setNewChat(false)
+  }
+
+  const handleCheckEnter = (e) => {
+    if (e.which === 13 && !e.shiftKey) return handleSendMessage()
   }
 
   useEffect(() => {
@@ -71,24 +73,25 @@ const Conversation = ({ productDetail }) => {
         </div>
       </div>
       <div className='d-flex flex-column w-100 mt-3'>
-        <Form onSubmit={handleSendMessage}>
-          <FloatingLabel controlId='floatingTextarea2' label='Deine Nachricht'>
-            <Form.Control
-              as='textarea'
-              placeholder='Nachricht eingeben'
-              style={{ height: '100px' }}
-              name='message'
-            />
-          </FloatingLabel>
-          <Button
-            variant='primary'
-            id='sendMessage'
-            type='submit'
-            className='mt-2 w-100'
-          >
-            Senden
-          </Button>
-        </Form>
+        <FloatingLabel controlId='floatingTextarea2' label='Deine Nachricht'>
+          <Form.Control
+            as='textarea'
+            placeholder='Nachricht eingeben'
+            style={{ height: '100px' }}
+            name='message'
+            onKeyUp={handleCheckEnter}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </FloatingLabel>
+        <Button
+          variant='primary'
+          id='sendMessage'
+          onClick={handleSendMessage}
+          className='mt-2 w-100'
+        >
+          Senden
+        </Button>
       </div>
     </div>
   )
