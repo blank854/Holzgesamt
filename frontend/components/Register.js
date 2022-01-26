@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Alert, Button, Col, Form, Modal, Row } from 'react-bootstrap'
+import Head from 'next/head'
 
 const Register = ({ showModal, handleClose }) => {
   const [message, setMessage] = useState('')
@@ -36,12 +37,9 @@ const Register = ({ showModal, handleClose }) => {
         setMessageType('success')
         setMessage('Benutzer erfolgreich erstellt')
       })
-      .catch(function (error) {
+      .catch(function (e) {
         setMessageType('warning')
-        setMessage(
-          'Das tut uns leid, da ist ein Fehler aufgetreten. Bitte versuche es später erneut.'
-        )
-        console.error(error)
+        setMessage(e.response.data.message)
       })
       .finally(() => {
         e.target.reset()

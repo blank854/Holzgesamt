@@ -27,6 +27,7 @@ export const ChatProvider = ({ children }) => {
 
   const getChatList = async () => {
     setMessage('')
+    if (!getUser()) return []
     let config = {
       method: 'get',
       url: `http://localhost:4000/user`,

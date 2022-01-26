@@ -3,6 +3,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import Layout from '../components/Layout'
 import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
+import Head from 'next/head'
 
 const myAdverts = () => {
   const { getAccountInformation, accountInformation, getUser } = useUser()
@@ -19,11 +20,15 @@ const myAdverts = () => {
 
   if (!getUser()) return <Layout></Layout>
   return (
-    <Layout>
-      <div className='mt-3'>
-        <h2>Meine Inserate</h2>
-        <p>Hier kannst du deine eigenen Inserate einsehen und bearbeiten</p>
-        {/* {favorites.map((favorite, index) => (
+    <>
+      <Head>
+        <title>Meine Inserate</title>
+      </Head>
+      <Layout>
+        <div className='mt-3'>
+          <h2>Meine Inserate</h2>
+          <p>Hier kannst du deine eigenen Inserate einsehen und bearbeiten</p>
+          {/* {favorites.map((favorite, index) => (
           <div className='p-4 rounded bg-light box-shadow mb-3' key={index}>
             <Row>
               <Col sm={12} md={3}>
@@ -69,8 +74,9 @@ const myAdverts = () => {
             </Row>
           </div>
         ))} */}
-      </div>
-    </Layout>
+        </div>
+      </Layout>
+    </>
   )
 }
 

@@ -18,7 +18,6 @@ const Conversation = ({ productDetail }) => {
   } = useChat()
   const [conversationInfo, setConversationInfo] = useState({})
   const [message, setMessage] = useState('')
-  const formRef = useRef()
 
   const handleSendMessage = async () => {
     if (newChat) {

@@ -6,10 +6,15 @@ import { ItemListProvider } from '../contexts/ItemListContext'
 import { ChatProvider } from '../contexts/ChatContext'
 import { MessageProvider } from '../contexts/MessageContext'
 import { FilterProvider } from '../contexts/FilterContext'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+      <Head>
+        <meta charSet='utf-8' />
+        <meta name='viewport' content='initial-scale=1.0, width=device-width' />
+      </Head>
       <SSRProvider>
         <MessageProvider>
           <UserProvider>

@@ -16,11 +16,13 @@ export const UserProvider = ({ children }) => {
 
   const { setMessage, setVariant } = useMessage()
 
-  const getUser = () => {
+  const getUser = (createMessage = true) => {
     if (typeof window == 'undefined') return null
     if (typeof getCookie('user') == 'undefined') {
-      setMessage('Bitte melde dich an, um fortzufahren.')
-      setVariant('warning')
+      if (createMessage) {
+        setMessage('Bitte melde dich an, um fortzufahren.')
+        setVariant('warning')
+      }
       return null
     }
 
@@ -196,7 +198,7 @@ export const UserProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    setLoggedIn(getUser() === null ? false : true)
+    setLoggedIn(getUser(false) === null ? false : true)
   }, [])
 
   const value = {
