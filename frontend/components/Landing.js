@@ -12,52 +12,27 @@ import {
 import Slider from 'rc-slider'
 import axios from 'axios'
 import { useRouter } from 'next/router'
+import { useFilter } from '../contexts/FilterContext'
+import {
+  FELLING_STATE,
+  LOCATION,
+  PRICE_VALUE,
+} from '../constants/filter_constants'
+import AutoComplete from './AutoComplete'
 
 const FELLED_VALUES = ['Fällstatus', 'Bereits gefällt', 'Nicht gefällt', 'Egal']
 
 const Landing = () => {
   const router = useRouter()
   const [circling, setCircling] = useState(150)
-  const [felled, setFelled] = useState(0)
   const [usages, setUsages] = useState([])
-  const [searchUsage, setSearchUsage] = useState([])
-  const [selectedUsage, setSelectedUsage] = useState('')
-  const [showAutocomplete, setShowAutocomplete] = useState(false)
+  const { addFilter, setSearch, addUsage } = useFilter()
+
   const handleCircling = (e) => {
     setCircling(e)
   }
 
-  const handleSetFelled = (e) => {
-    setFelled(e)
-  }
-
-  const handleSearchUsage = (e) => {
-    setSelectedUsage(e.target.value)
-    console.log(usages)
-    let tmpSearchUsage = usages.filter((item) =>
-      item.includes(e.target.value)
-    )
-    setSearchUsage(tmpSearchUsage)
-  }
-
-  const handleClickUsage = (e) => {
-    setSelectedUsage(e)
-    setShowAutocomplete(false)
-  }
-const handleOnBlur = (e) => {
-  if (e.relatedTarget){
-    if (e.relatedTarget.parentElement.id !== "ListGroupUsages"){
-      setShowAutocomplete(false)
-    }
-  } else {
-    setShowAutocomplete(false)
-  }
-
-} 
-
-
   useEffect(() => {
-
     const config = {
       method: 'get',
       url: 'http://localhost:4000/statistics/usages',
@@ -76,54 +51,29 @@ const handleOnBlur = (e) => {
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
 
-    const filter = {
-      filters: [],
-      sorter: {
-        'price.priceValue': '-1',
-      },
-      paging: {
-        limit: 25,
-        skip: 0,
-      },
-      usage:[]
+    if (formDataObj.usages) {
+      addUsage(formDataObj.usages)
     }
-
-    if (formDataObj.usage){
-      filter.usage.push(formDataObj.usage)
-    }
-    console.log(filter)
 
     if (formDataObj.search) {
-      filter.search = {
-        value: formDataObj.search,
-      }
+      setSearch(formDataObj.search)
     }
 
     if (formDataObj.zip) {
-      filter.filters.push({
-        field: 'treeDetail.location',
+      addFilter(LOCATION, {
         maxDistance: circling * 1000,
         zip: formDataObj.zip,
       })
     }
 
     if (formDataObj.price) {
-      filter.filters.push({
-        field: 'price.priceValue',
-        value: {
-          $lte: formDataObj.price,
-        },
-      })
+      addFilter(PRICE_VALUE, { maxPrice: formDataObj.price })
     }
 
-    if (felled == 1 || felled == 2) {
-      filter.filters.push({
-        field: 'treeDetail.fellingState.felled',
-        value: felled === 1 ? true : false,
-      })
+    if (formDataObj.usage) {
+      setUsage(formDataObj.usage)
     }
-
-    router.push(`/search/${JSON.stringify(filter)}`)
+    router.push(`/search`)
   }
   return (
     <div className='Landing d-flex flex-row align-items-center'>
@@ -132,13 +82,13 @@ const handleOnBlur = (e) => {
           <Col lg={5} md={8} className='p-4 bg-light text-primary rounded'>
             <h2 className='mb-4'>
               <b>
-                Der Passende Baum.
+                Der passende Baum.
                 <br />
                 Für jedes Projekt.
               </b>
             </h2>
 
-            <Form onSubmit={handleSubmit} autocomplete="off">
+            <Form onSubmit={handleSubmit} autoComplete='off'>
               <div className='d-flex flex-row align-items-center mb-3'>
                 <i className='fas fa-search pe-3'></i>
                 <Form.Control
@@ -193,73 +143,15 @@ const handleOnBlur = (e) => {
                     />
                   </div>
                 </Col>
-                  
-                <Col md={6} >
-                   <div className='d-flex flex-row align-items-center mb-3 position-relative'>
-                   <i className='fas fa-space-shuttle pe-3'></i>
-                   <div>
-                      <Form.Control
-                      className=" w-100"
-                        type='usage'
-                        placeholder='Verwendungszweck'
-                        name='usage'
-                        onFocus={() => setShowAutocomplete(true)}
-                        onBlur={handleOnBlur}
-                        onChange={handleSearchUsage}
-                        value={selectedUsage}
-                      />
-                      <ListGroup
-                        className={`position-absolute w-100 ${
-                          !showAutocomplete ? 'd-none' : ''
-                        }`}
-                        id="ListGroupUsages"
-                        style={{zIndex:"9999"}}
-                      >
 
-                        {searchUsage.map((item, index) => (
-                          <ListGroup.Item
-                            key={index}
-                            onClick={() =>
-                              handleClickUsage(item)
-                            }
-                            tabIndex="-1"
-                            className='pointer'
-                          >
-                            {item}
-                          </ListGroup.Item>
-                        ))}
-                      </ListGroup>
-                      </div>
-                      </div>
-                      </Col>
                 <Col md={6}>
-                  <div className='d-flex flex-row align-items-center mb-3'>
-                    <i className='fas fa-tree pe-3'></i>
-                    <Dropdown
-                      onSelect={handleSetFelled}
-                      className='w-100'
-                      align='end'
-                    >
-                      <Dropdown.Toggle
-                        variant='dark'
-                        id='dropdown-felled'
-                        className='w-100'
-                      >
-                        {FELLED_VALUES[felled]}
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item eventKey={1}>
-                          {FELLED_VALUES[1]}
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey={2}>
-                          {FELLED_VALUES[2]}
-                        </Dropdown.Item>
-                        <Dropdown.Item eventKey={3}>
-                          {FELLED_VALUES[3]}
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                  <div className='d-flex flex-row align-items-center mb-3 position-relative'>
+                    <i className='fas fa-space-shuttle pe-3'></i>
+                    <AutoComplete
+                      list={usages}
+                      name='usages'
+                      placeholder='Verwendungszweck'
+                    />
                   </div>
                 </Col>
               </Row>

@@ -9,41 +9,42 @@ const multerS3 = require('multer-s3')
 require('dotenv').config()
 
 const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+    accessKeyId: process.env.AWS_ACCESS_KEY,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
 });
 
- const fileFilter = (req, file, cb) => {
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-    cb(null, true);
-  } else {
-    cb(new Error("filetype not allowed"), false);
-  }
-}; 
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+    } else {
+        cb(new Error(`Der Dateityp ${file.mimetype} ist unzulässig. Mögliche Content-Types sind "image/jpeg" und "image/png".`), false);
+    }
+};
 
 const upload = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.BUCKET,
-    contentType: multerS3.AUTO_CONTENT_TYPE,
-    acl: "public-read",
-    metadata: function (req, file, cb) {
-      cb(null, {fieldName: file.fieldname});
-    },
-    fileFilter: fileFilter,
-    key: function (req, file, cb) {
-      cb(null, Date.now() + path.extname(file.originalname));
-   }
-  })
+    storage: multerS3({
+        s3: s3,
+        bucket: process.env.BUCKET,
+        contentType: multerS3.AUTO_CONTENT_TYPE,
+        acl: "public-read",
+        metadata: function(req, file, cb) {
+            cb(null, { fieldName: file.fieldname });
+        },
+        fileFilter: fileFilter,
+        key: function(req, file, cb) {
+            cb(null, Date.now() + path.extname(file.originalname));
+        }
+    })
 })
 
 
 
-router.post("/",authCheck, upload.single('Image'), (req, res, next) => {
+router.post("/", authCheck, upload.single('Image'), (req, res, next) => {
 
-        res.status(200).json({
-          link: req.file.location
-        })
+    res.status(200).json({
+        message: "Bild wurde erfolgreich hochgeladen.",
+        link: req.file.location
+    })
 
 });
 
@@ -58,7 +59,7 @@ module.exports = router;
   }
  }); */
 
- /* const upload = multer({
+/* const upload = multer({
   storage: storage,
   limits: {
     fileSize: 1024 * 1024 * 5

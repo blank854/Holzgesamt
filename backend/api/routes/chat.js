@@ -18,7 +18,7 @@ router.get("/:chatId", authCheck, (req, res, next) => {
         .exec()
         .then(result => {
 
-            if (req.authUserData.userId != result.sender._id && req.authUserData.userId != result.reciever._id) res.status(500).json({ message: "Chat belongs to other IDs" })
+            if (req.authUserData.userId != result.sender._id && req.authUserData.userId != result.reciever._id) res.status(500).json({ message: "Chat gehört zu anderen UserID's." })
             res.status(200).json({ result })
             if (req.authUserData.userId == result.sender) {
                 result.newMessages.sender = false;
@@ -27,10 +27,10 @@ router.get("/:chatId", authCheck, (req, res, next) => {
             }
             const update = {
                 newMessages: result.newMessages
-            } 
+            }
 
         })
-        .catch((err) => { res.status(500).json({ message: "Error while finding chat", error: err }) })
+        .catch((err) => { res.status(500).json({ message: "Beim Suchen des Chats ist ein Fehler aufgetreten.", error: err }) })
 });
 
 router.post("/message", authCheck, (req, res, next) => {
@@ -63,7 +63,7 @@ router.post("/message", authCheck, (req, res, next) => {
         Chat.findByIdAndUpdate(oID, update)
             .exec()
             .then((chatResult) => { res.status(200).json({ chatResult }) })
-            .catch(err => { res.status(500).json({ message: "Error while updating chat", error: err }) })
+            .catch(err => { res.status(500).json({ message: "Beim Aktualisieren des Chats ist ein Fehler aufgetreten.", error: err }) })
     })
 })
 
@@ -71,14 +71,16 @@ router.post("/message", authCheck, (req, res, next) => {
 
 router.post('/', authCheck, async(req, res, next) => {
     const offer = await Offer.findById(req.body.offer).catch((err) => {
-        res.status(500).json({ message: 'Offer does not exist', error: err })
+        res.status(500).json({ message: "Das Inserat konnte nicht gefunden werden.", error: err })
         return
     })
     const findChat = await Chat.findOne({
         sender: req.authUserData.userId,
         reciever: offer.user,
         offer: req.body.offer,
-    }).catch((error) => {})
+    }).catch((err) => {
+        res.status(500).json({ message: "Beim Suchen des Chats ist ein Fehler aufgetreten.", error: err })
+    })
 
     if (findChat) {
         res.status(200).json({ findChat })
@@ -86,11 +88,11 @@ router.post('/', authCheck, async(req, res, next) => {
     }
 
     if (!req.body.message) {
-        res.status(400).json({ message: 'Please send a message', error: err })
+        res.status(400).json({ message: "Es wurde keine Nachricht mitgeschickt.", error: err })
         return
     }
 
-    Offer.findByIdAndUpdate(req.body.offer, {$inc : {'scores.contacts' : 1, "scores.scoreRank": 10 }})
+    Offer.findByIdAndUpdate(req.body.offer, { $inc: { 'scores.contacts': 1, "scores.scoreRank": 10 } })
         .exec()
 
     const chat = new Chat({
@@ -157,7 +159,7 @@ router.post('/', authCheck, async(req, res, next) => {
                             .catch((err) => {
                                 res
                                     .status(500)
-                                    .json({ message: 'Error while searching user', error: err })
+                                    .json({ message: "Der Benutzer konnte nicht gefunden werden.", error: err })
                             })
                     })
             })

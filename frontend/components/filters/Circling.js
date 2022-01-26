@@ -1,8 +1,19 @@
 import React, { useState } from 'react'
 import Slider from 'rc-slider'
-import { Button, Col, Dropdown, Form, Row } from 'react-bootstrap'
+import { Col, Form, Row } from 'react-bootstrap'
+import { useFilter } from '../../contexts/FilterContext'
+import { LOCATION } from '../../constants/filter_constants'
 
-const Circling = ({ circling, setCircling, setLocation }) => {
+const Circling = () => {
+  const { getFilter } = useFilter()
+  const [circling, setCircling] = useState(
+    getFilter(LOCATION) ? parseInt(getFilter(LOCATION).maxDistance) / 1000 : 150
+  )
+
+  const [location, setLocation] = useState(
+    getFilter(LOCATION) && getFilter(LOCATION).zip
+  )
+
   const handleCircling = (e) => {
     setCircling(e)
   }
@@ -21,7 +32,13 @@ const Circling = ({ circling, setCircling, setLocation }) => {
     <>
       <Form.Group className='mb-3' controlId='zip'>
         <Form.Label>Postleitzahl</Form.Label>
-        <Form.Control type='text' placeholder='12345' />
+        <Form.Control
+          type='text'
+          placeholder='12345'
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          name='zip'
+        />
       </Form.Group>
       <Form.Group>
         <Form.Label>maximale Entfernung</Form.Label>
@@ -49,7 +66,6 @@ const Circling = ({ circling, setCircling, setLocation }) => {
               type='text'
               placeholder='max. Entfernung'
               value={`${circling}km`}
-              disabled
               name='circling'
             />
           </Col>

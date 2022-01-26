@@ -57,8 +57,7 @@ exports.sendMail = async function sendMail(mailData, configType) {
         if (err) {
             console.log(err.message);
         } else {
-            console.log(`Email sent to: ${mailData.email}`);
-            //console.log(info);
+            console.log(`E-Mail versendet an: ${mailData.email}`);
             transporter.close();
         }
     });

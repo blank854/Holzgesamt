@@ -5,6 +5,7 @@ import { UserProvider } from '../contexts/UserContext'
 import { ItemListProvider } from '../contexts/ItemListContext'
 import { ChatProvider } from '../contexts/ChatContext'
 import { MessageProvider } from '../contexts/MessageContext'
+import { FilterProvider } from '../contexts/FilterContext'
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps }) {
           <UserProvider>
             <ChatProvider>
               <ItemListProvider>
-                <Component {...pageProps} />
+                <FilterProvider>
+                  <Component {...pageProps} />
+                </FilterProvider>
               </ItemListProvider>
             </ChatProvider>
           </UserProvider>

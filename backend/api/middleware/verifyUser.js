@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         User.findOneAndUpdate({ _id: req.query.id }, { status: "Verifiziert" })
             .exec()
             .then(user => {
-                console.log(`Email "${user.email}" verified successfully`);
+                console.log(`E-Mail "${user.email}" wurde erfolgreich verifiziert.`);
                 next()
             });
     } else {

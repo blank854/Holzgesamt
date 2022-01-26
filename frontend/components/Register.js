@@ -89,7 +89,7 @@ const Register = ({ showModal, handleClose }) => {
             </Form.Text>
           </Form.Group>
           <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label>E-Mail Adresse</Form.Label>
+            <Form.Label>E-Mail-Adresse</Form.Label>
             <Form.Control
               type='email'
               placeholder='max@mustermail.com'
@@ -101,7 +101,7 @@ const Register = ({ showModal, handleClose }) => {
             <Col md={6}>
               <Form.Group className='' controlId='formBasicEmail'>
                 <Form.Label>Vorname</Form.Label>
-                <Form.Control type='text' placeholder='Max' name='prename' />
+                <Form.Control type='text' placeholder='Max' name='prename' required/>
               </Form.Group>
             </Col>
             <Col md={6}>
