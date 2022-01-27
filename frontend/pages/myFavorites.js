@@ -37,7 +37,7 @@ const myFavorites = () => {
                 <Col sm={12} md={3}>
                   <img
                     src={favorite.pictures[0].access}
-                    className='w-100 rounded'
+                    className='w-100 rounded mb-3'
                   />
                 </Col>
                 <Col sm={12} md={9}>
@@ -45,14 +45,16 @@ const myFavorites = () => {
                     <Col sm={12} md={6}>
                       <p>
                         <b>Titel</b>
-                      </p>
-                      <p>
-                        <p>{favorite.title}</p>
+                        <br />
+                        {favorite.title}
                       </p>
                     </Col>
                     <Col sm={12} md={6}>
-                      <b>Preis</b>
-                      <p>{`${favorite.price.priceValue}€ ${favorite.price.priceType}`}</p>
+                      <p>
+                        <b>Preis</b>
+                        <br />
+                        {`${favorite.price.priceValue}€ ${favorite.price.priceType}`}
+                      </p>
                     </Col>
                   </Row>
                   <Row className='mt-5'>

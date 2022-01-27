@@ -1,27 +1,41 @@
-import React, { useState, useEffect } from 'react'
-import { Dropdown, Form } from 'react-bootstrap'
-import { FELLING_STATE } from '../../constants/filter_constants'
-import { useFilter } from '../../contexts/FilterContext'
+import React from 'react'
+import { Button, Col, Row } from 'react-bootstrap'
 
-const Felled = () => {
-  const { getFilter } = useFilter()
-  const [felled, setFelled] = useState(
-    getFilter(FELLING_STATE) && getFilter(FELLING_STATE).value
-  )
-
-  const handleSwitchChange = (e) => {
-    setFelled(e.target.checked)
+const Felled = ({ felled, setFelled }) => {
+  const handleClick = (value) => {
+    setFelled(value)
   }
   return (
     <div className='p-3 text-center'>
-      <Form.Check
-        type='switch'
-        id='felledSwitch'
-        label={felled ? 'Baum bereits gefällt' : 'Baum nicht gefällt'}
-        onChange={handleSwitchChange}
-        name='felled'
-        checked={felled}
-      />
+      <Row>
+        <Col>
+          <Button
+            variant={felled ? 'primary' : 'secondary'}
+            className='text-nowrap w-100'
+            onClick={() => handleClick(true)}
+          >
+            Gefällt
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            variant={felled === false ? 'primary' : 'secondary'}
+            className='text-nowrap w-100'
+            onClick={() => handleClick(false)}
+          >
+            Nicht gefällt
+          </Button>
+        </Col>
+        <Col>
+          <Button
+            variant={felled === null ? 'primary' : 'secondary'}
+            className='text-nowrap w-100'
+            onClick={() => handleClick(null)}
+          >
+            Egal
+          </Button>
+        </Col>
+      </Row>
     </div>
   )
 }

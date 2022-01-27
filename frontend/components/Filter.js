@@ -17,8 +17,11 @@ import {
 } from '../constants/filter_constants'
 
 const Filter = ({ setSearchResult, changed, setChanged }) => {
-  const [order, setOrder] = useState({})
   const [showFilter, setShowFilter] = useState(false)
+  const { getFilter } = useFilter()
+  const [felled, setFelled] = useState(
+    getFilter(FELLING_STATE) && getFilter(FELLING_STATE).value
+  )
 
   const { addFilter, getAllFilters, addUsage } = useFilter()
 
@@ -28,36 +31,27 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
 
-    if (formDataObj.zip) {
-      addFilter(LOCATION, {
-        maxDistance: parseInt(formDataObj.circling) * 1000,
-        zip: formDataObj.zip,
-      })
-    }
-
-    let price = {}
-
-    if (formDataObj.minPrice) {
-      price.minPrice = formDataObj.minPrice
-    }
-
-    if (formDataObj.maxPrice) {
-      price.maxPrice = formDataObj.maxPrice
-    }
-
-    if (formDataObj.maxPrice || formDataObj.minPrice) {
-      addFilter(PRICE_VALUE, price)
-    }
-    if (formDataObj.felled) {
-      addFilter(FELLING_STATE, {
-        felled: formDataObj.felled === 'on' ? true : false,
-      })
-    }
+    addFilter(LOCATION, {
+      maxDistance: parseInt(formDataObj.circling) * 1000,
+      zip: formDataObj.zip,
+    })
+    addFilter(PRICE_VALUE, {
+      minPrice: formDataObj.minPrice,
+      maxPrice: formDataObj.maxPrice,
+    })
+    addFilter(FELLING_STATE, {
+      felled: felled,
+    })
 
     if (formDataObj.usage) {
       addUsage(formDataObj.usage)
     }
 
+    updateList()
+    setShowFilter(false)
+  }
+
+  const updateList = () => {
     const config = {
       method: 'post',
       url: 'http://localhost:4000/offer/getAll',
@@ -70,7 +64,6 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
     axios(config).then((response) => {
       setSearchResult(response.data)
       setChanged(!changed)
-      setShowFilter(false)
     })
   }
 
@@ -80,7 +73,7 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
         className='Filter mb-5 d-flex w-100 justify-content-end'
         style={{ gap: '1rem' }}
       >
-        {/* <SortOrder order={order} setOrder={setOrder} /> */}
+        <SortOrder updateList={updateList} />
         <Button variant='primary' onClick={() => setShowFilter(true)}>
           <i className='fas fa-filter'></i>
         </Button>
@@ -103,7 +96,7 @@ const Filter = ({ setSearchResult, changed, setChanged }) => {
               <h6>
                 <b>Fällstatus</b>
               </h6>
-              <Felled />
+              <Felled felled={felled} setFelled={setFelled} />
               <hr />
               <h6>
                 <b>Umkreis</b>
