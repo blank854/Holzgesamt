@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { Button, Col, Row } from 'react-bootstrap'
 import Layout from '../components/Layout'
 import { useMessage } from '../contexts/MessageContext'
@@ -16,7 +16,6 @@ const myFavorites = () => {
   }, [])
 
   const handleRemoveFavorite = (offerId) => {
-    console.log(offerId)
     toggleFavorite(offerId).then()
   }
 
@@ -38,6 +37,7 @@ const myFavorites = () => {
                   <img
                     src={favorite.pictures[0].access}
                     className='w-100 rounded mb-3'
+                    style={{ objectFit: 'scale-down', height: '15rem' }}
                   />
                 </Col>
                 <Col sm={12} md={9}>

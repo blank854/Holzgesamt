@@ -1,5 +1,5 @@
 import React from 'react'
-import { CloseButton, Offcanvas } from 'react-bootstrap'
+import { Offcanvas } from 'react-bootstrap'
 import { useChat } from '../contexts/ChatContext'
 import ChatList from './ChatList'
 import Conversation from './Conversation'

@@ -1,4 +1,3 @@
-import axios from 'axios'
 import React from 'react'
 import { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
@@ -9,7 +8,6 @@ const Login = ({ setShowDropdown }) => {
   const [message, setMessage] = useState('')
 
   const handleLogin = (e) => {
-    console.log('Login')
     e.preventDefault()
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())

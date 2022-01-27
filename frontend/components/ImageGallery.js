@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Carousel, Col, Row } from 'react-bootstrap'
+import { Carousel } from 'react-bootstrap'
 
 const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(0)

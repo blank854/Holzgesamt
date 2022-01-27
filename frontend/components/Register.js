@@ -1,7 +1,6 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Alert, Button, Col, Form, Modal, Row } from 'react-bootstrap'
-import Head from 'next/head'
 
 const Register = ({ showModal, handleClose }) => {
   const [message, setMessage] = useState('')

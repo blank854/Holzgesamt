@@ -1,26 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import {
-  Button,
-  ButtonGroup,
-  Col,
-  Container,
-  Dropdown,
-  Form,
-  Row,
-  ListGroup,
-} from 'react-bootstrap'
+import { Button, Col, Container, Form, Row } from 'react-bootstrap'
 import Slider from 'rc-slider'
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useFilter } from '../contexts/FilterContext'
-import {
-  FELLING_STATE,
-  LOCATION,
-  PRICE_VALUE,
-} from '../constants/filter_constants'
+import { LOCATION, PRICE_VALUE } from '../constants/filter_constants'
 import AutoComplete from './AutoComplete'
-
-const FELLED_VALUES = ['Fällstatus', 'Bereits gefällt', 'Nicht gefällt', 'Egal']
 
 const Landing = () => {
   const router = useRouter()

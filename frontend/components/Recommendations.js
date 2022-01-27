@@ -1,5 +1,4 @@
 import React from 'react'
-import Item from './Item'
 import ItemList from './ItemList'
 
 const Recommendations = ({ recommendations }) => {

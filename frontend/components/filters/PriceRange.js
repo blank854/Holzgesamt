@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Col, Form, Row } from 'react-bootstrap'
-import 'rc-slider/assets/index.css'
+import React, { useState } from 'react'
+import { Col, Form, Row } from 'react-bootstrap'
 import { useFilter } from '../../contexts/FilterContext'
 import { PRICE_VALUE } from '../../constants/filter_constants'
 

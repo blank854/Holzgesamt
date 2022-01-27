@@ -1,8 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import Layout from '../components/Layout'
-import axios from 'axios'
-import { Button, Col, Row } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 
 export default function Home() {
   return (

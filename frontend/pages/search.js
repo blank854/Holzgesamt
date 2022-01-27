@@ -26,8 +26,6 @@ const searchPage = () => {
       data: getAllFilters(),
     }
 
-    console.log(config)
-
     axios(config).then((response) => {
       setSearchResult(response.data)
     })

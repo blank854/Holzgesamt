@@ -31,7 +31,6 @@ const productDetail = ({ productDetail, API_KEY }) => {
 
   useEffect(() => {
     setMessage('')
-    console.log('test')
 
     const loader = new Loader({
       apiKey: API_KEY,
@@ -73,14 +72,10 @@ const productDetail = ({ productDetail, API_KEY }) => {
   }, [])
 
   const handleStartChat = () => {
-    checkForExistingChat(productDetail)
-      .then(() => {
-        setProductDetail(productDetail)
-        setShowChat(true)
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+    checkForExistingChat(productDetail).then(() => {
+      setProductDetail(productDetail)
+      setShowChat(true)
+    })
   }
   return (
     <>

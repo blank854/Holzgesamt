@@ -1,5 +1,4 @@
-import axios from 'axios'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 
 const ItemListContext = React.createContext()
 
@@ -11,7 +10,6 @@ export const ItemListProvider = ({ children }) => {
   const [itemList, setItemList] = useState([])
   const [loading, setLoading] = useState()
 
-  const getAllItems = () => {}
   const value = {
     itemList,
     setItemList,

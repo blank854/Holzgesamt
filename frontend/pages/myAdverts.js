@@ -14,10 +14,6 @@ const myAdverts = () => {
     setMessage('')
   }, [])
 
-  useEffect(() => {
-    console.log(accountInformation)
-  }, [accountInformation])
-
   if (!getUser()) return <Layout></Layout>
   return (
     <>

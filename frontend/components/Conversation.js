@@ -1,12 +1,9 @@
-import axios from 'axios'
-import React, { useState, useEffect, useRef } from 'react'
-import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap'
+import React, { useState, useEffect } from 'react'
+import { Button, FloatingLabel, Form } from 'react-bootstrap'
 import { useChat } from '../contexts/ChatContext'
-import { useUser } from '../contexts/UserContext'
 import Message from './Message'
 
 const Conversation = ({ productDetail }) => {
-  const { getUser } = useUser()
   const {
     setConversation,
     getMessages,

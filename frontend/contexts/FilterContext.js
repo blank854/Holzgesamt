@@ -1,5 +1,4 @@
-import axios from 'axios'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   ENTRIES_PER_PAGE,
   FELLING_STATE,

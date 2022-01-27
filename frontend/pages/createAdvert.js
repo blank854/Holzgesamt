@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form, Row, Col, ListGroup } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 import Alert from 'react-bootstrap/Alert'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -37,7 +37,6 @@ const createAdvert = () => {
     let tmpSelectedQualities = selectedQualities.split(' ')
     tmpSelectedQualities.push(Quality)
     setSelectedQualities(tmpSelectedQualities.join(' '))
-    console.log(tmpSelectedQualities)
   }
   const handleSelect = (e) => {
     setPriceType(e)
@@ -103,7 +102,6 @@ const createAdvert = () => {
         zip: formDataObj.zip,
       }
     }
-    console.log(offer)
 
     const config = {
       method: 'post',
@@ -137,10 +135,6 @@ const createAdvert = () => {
       })
   }
 
-  const handleDropdownClick = (e) => {
-    setPriceType(e.target.outerText)
-  }
-
   const handleFileUpload = (e) => {
     setLoading(true)
     setFile(e.target.files[0])
@@ -158,10 +152,8 @@ const createAdvert = () => {
           URL: imgPaths[0].access,
         },
       }
-      console.log(config)
       axios(config)
         .then(function (response) {
-          console.log(response)
           if (response.data.length > 0) {
             setLatinSpecies(response.data[0].species)
             setLatinSpeciesColor('bg-info text-white')
@@ -171,7 +163,10 @@ const createAdvert = () => {
           }
         })
         .catch(function (error) {
-          console.log(error)
+          setMessage(
+            'Fehler beim Identifizieren des Bildes. Bitte versuche es erneut.'
+          )
+          setVariant('warning')
         })
     }
   }
@@ -198,7 +193,10 @@ const createAdvert = () => {
         setLoading(false)
       })
       .catch((e) => {
-        console.error(e)
+        setMessage(
+          'Fehler beim Hochladen des Bildes. Bitte versuche es erneut.'
+        )
+        setVariant('warning')
       })
   }, [file])
 

@@ -42,7 +42,6 @@ export const ChatProvider = ({ children }) => {
         return response.data.result.chats
       })
       .catch((e) => {
-        console.error('Fehler')
         setMessages(e.response.data.message)
         setVariant('danger')
         setShowChat(false)

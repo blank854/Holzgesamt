@@ -79,7 +79,6 @@ export const UserProvider = ({ children }) => {
         setMessage('')
       })
       .catch((e) => {
-        console.log(e.response)
         setMessage(e.response.data.message)
         setVariant('warning')
       })
@@ -121,8 +120,6 @@ export const UserProvider = ({ children }) => {
         config.method = 'delete'
       }
 
-      console.log(config)
-
       axios(config)
         .then(() => {
           getFavorites()
@@ -130,7 +127,6 @@ export const UserProvider = ({ children }) => {
         .catch((e) => {
           // setMessage(e.response.data.message)
           // TODO Timo muss Message mitliefern
-          console.error(e)
           setVariant('danger')
         })
     })
