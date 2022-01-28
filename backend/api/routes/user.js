@@ -223,6 +223,7 @@ router.get("/", authCheck, (req, res, next) => {
             ]
         })
         .populate({ path: 'favorites', select: "_id created lastUpdated treeDetail.species fellingState title price pictures" })
+        .populate({path:"offers", select: "_id created lastUpdated treeDetail.species fellingState title price pictures"})
         .exec()
         .then(result => { res.status(200).json({ result }); })
         .catch(err => { res.status(500).json({ error: err }); });

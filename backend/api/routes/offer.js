@@ -29,6 +29,7 @@ router.post('/getAll', async(req, res, next) => {
     const requestUsage = req.body.usage
     var skip
     var limit
+    var countEntries;
 
     if (typeof requestFilters !== 'undefined') {
         for (const item of requestFilters) {
@@ -77,6 +78,8 @@ router.post('/getAll', async(req, res, next) => {
     if (typeof requestPaging !== 'undefined') {
         limit = requestPaging.limit
         skip = requestPaging.skip
+        countEntries = requestPaging.count
+
     }
     if (typeof req.body.sorter !== 'undefined') {
         sorter = req.body.sorter
@@ -97,11 +100,30 @@ router.post('/getAll', async(req, res, next) => {
     }
     if (filterOr.length > 0) filter["$or"] = filterOr;
     if (filterAnd.length > 0) filter["$and"] = filterAnd;
-    console.log(filter)
 
     sorter['scores.scoreRank'] = -1
 
-    Offer.find(filter)
+    if (countEntries){
+        Offer.find(filter)
+        .select(
+            '_id created lastUpdated treeDetail.species fellingState title price pictures'
+        )
+        .sort(sorter)
+        .exec()
+        .then((offers) => {
+            const length = offers.length;
+            const sendOffers = offers.splice(skip,limit)
+
+            res.status(200).json({  count: length ,
+                                    offers: sendOffers})
+        })
+        .catch((err) => {
+            res
+                .status(500)
+                .json({ message: "Beim Abfragen der Inserate ist ein Fehler aufgetreten.", error: err })
+        })
+    } else {
+        Offer.find(filter)
         .limit(limit)
         .skip(skip)
         .select(
@@ -110,13 +132,15 @@ router.post('/getAll', async(req, res, next) => {
         .sort(sorter)
         .exec()
         .then((offers) => {
-            res.status(200).json(offers)
+                 res.status(200).json({  count: false ,
+                offers: offers})
         })
         .catch((err) => {
             res
                 .status(500)
                 .json({ message: "Beim Abfragen der Inserate ist ein Fehler aufgetreten.", error: err })
         })
+    }
 })
 
 router.post('/', authCheck, async(req, res, next) => {

@@ -14,7 +14,7 @@ require('dotenv').config()
 
 Mongoose.connect(process.env.MONGODBACCESS).catch(err => { console.log("Error") });
 
-//expressServer.use(bodyParser.urlencoded({ extended: true }));
+expressServer.use(bodyParser.urlencoded({ extended: true }));
 expressServer.use(bodyParser.json());
 
 expressServer.use((req, res, next) => {
