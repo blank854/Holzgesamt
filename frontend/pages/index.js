@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import ItemList from '../components/ItemList'
 import Layout from '../components/Layout'
 import axios from 'axios'
@@ -6,8 +6,13 @@ import FilterLanding from '../components/FilterLanding'
 import Landing from '../components/Landing'
 import { Container } from 'react-bootstrap'
 import Head from 'next/head'
+import { useMessage } from '../contexts/MessageContext'
 
 const Shop = ({ productList }) => {
+  const { setMessage } = useMessage()
+  useEffect(() => {
+    setMessage('')
+  }, [])
   return (
     <>
       <Head>
