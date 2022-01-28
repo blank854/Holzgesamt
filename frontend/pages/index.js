@@ -39,6 +39,7 @@ export async function getServerSideProps(context) {
     paging: {
       limit: 10,
       skip: 0,
+      count: false,
     },
   }
   var config = {
@@ -52,7 +53,7 @@ export async function getServerSideProps(context) {
 
   let productList = await axios(config)
 
-  productList = productList.data.slice(0, 4)
+  productList = productList.data.offers.slice(0, 4)
 
   productList = JSON.stringify(productList)
 

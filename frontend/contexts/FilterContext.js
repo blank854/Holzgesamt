@@ -18,7 +18,8 @@ export const FilterProvider = ({ children }) => {
   const [filter, setFilter] = useState({
     filters: [],
     paging: {
-      limit: 10,
+      count: true,
+      limit: ENTRIES_PER_PAGE,
       skip: 0,
     },
     usage: [],
@@ -105,6 +106,8 @@ export const FilterProvider = ({ children }) => {
       tmpFilter.filters.push(filterData)
     }
 
+    tmpFilter.paging.count = true
+
     setFilter(tmpFilter)
   }
 
@@ -155,24 +158,24 @@ export const FilterProvider = ({ children }) => {
 
   const nextPage = () => {
     let tmpFilter = filter
-    tmpFilter.paging.limit += ENTRIES_PER_PAGE
     tmpFilter.paging.skip += ENTRIES_PER_PAGE
+    tmpFilter.paging.count = false
 
     setFilter(tmpFilter)
   }
 
   const previousPage = () => {
     let tmpFilter = filter
-    tmpFilter.paging.limit -= ENTRIES_PER_PAGE
     tmpFilter.paging.skip -= ENTRIES_PER_PAGE
+    tmpFilter.paging.count = false
 
     setFilter(tmpFilter)
   }
 
   const setPage = (page) => {
     let tmpFilter = filter
-    tmpFilter.paging.limit += page * ENTRIES_PER_PAGE
-    tmpFilter.paging.skip += (page - 1) * ENTRIES_PER_PAGE
+    tmpFilter.paging.skip = (page - 1) * ENTRIES_PER_PAGE
+    tmpFilter.paging.count = false
 
     setFilter(tmpFilter)
   }

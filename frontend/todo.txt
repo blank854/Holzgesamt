@@ -94,3 +94,9 @@ TODO Empfehlungen mit get Endpunkt ohne Filter --> Standardmäßig absteigend na
 
 
 deutsche Baumspezies autocomplete
+
+
+
+Urheberrechtliche Fragen:
+ - Das Urheberrecht liegt bei den Sudierenden nicht bei der Uni oder dem Betrieb
+ - Kein Sperrvermerk
