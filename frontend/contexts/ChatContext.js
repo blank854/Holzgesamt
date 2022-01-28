@@ -27,6 +27,7 @@ export const ChatProvider = ({ children }) => {
 
   const getChatList = async () => {
     setMessage('')
+    if (!getUser()) return []
     let config = {
       method: 'get',
       url: `http://localhost:4000/user`,
@@ -41,7 +42,6 @@ export const ChatProvider = ({ children }) => {
         return response.data.result.chats
       })
       .catch((e) => {
-        console.error('Fehler')
         setMessages(e.response.data.message)
         setVariant('danger')
         setShowChat(false)

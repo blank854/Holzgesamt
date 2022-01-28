@@ -16,11 +16,13 @@ export const UserProvider = ({ children }) => {
 
   const { setMessage, setVariant } = useMessage()
 
-  const getUser = () => {
+  const getUser = (createMessage = true) => {
     if (typeof window == 'undefined') return null
     if (typeof getCookie('user') == 'undefined') {
-      setMessage('Bitte melde dich an, um fortzufahren.')
-      setVariant('warning')
+      if (createMessage) {
+        setMessage('Bitte melde dich an, um fortzufahren.')
+        setVariant('warning')
+      }
       return null
     }
 
@@ -78,7 +80,7 @@ export const UserProvider = ({ children }) => {
       })
       .catch((e) => {
         setMessage(e.response.data.message)
-        setVariant('danger')
+        setVariant('warning')
       })
   }
 
@@ -118,8 +120,6 @@ export const UserProvider = ({ children }) => {
         config.method = 'delete'
       }
 
-      console.log(config)
-
       axios(config)
         .then(() => {
           getFavorites()
@@ -127,7 +127,6 @@ export const UserProvider = ({ children }) => {
         .catch((e) => {
           // setMessage(e.response.data.message)
           // TODO Timo muss Message mitliefern
-          console.error(e)
           setVariant('danger')
         })
     })
@@ -196,7 +195,7 @@ export const UserProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    setLoggedIn(getUser() === null ? false : true)
+    setLoggedIn(getUser(false) === null ? false : true)
   }, [])
 
   const value = {

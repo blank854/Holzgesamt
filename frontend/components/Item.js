@@ -13,7 +13,7 @@ const Item = ({ item }) => {
           onMouseEnter={() => setDetailsVisible(true)}
           onMouseLeave={() => setDetailsVisible(false)}
         >
-          {item.pictures[0] ? (
+          {
             <Card.Img
               variant='top'
               src={item.pictures[0].access}
@@ -24,20 +24,7 @@ const Item = ({ item }) => {
                 height: '15rem',
               }}
             />
-          ) : (
-            <Card.Img
-              variant='top'
-              src={
-                'https://bilder.t-online.de/b/91/04/74/62/id_91047462/343h/c_raw/tid_da/baum-des-jahres-2022-rotbuche-fagus-sylvatica-.jpg'
-              }
-              className='p-3'
-              style={{
-                borderRadius: '1.25rem',
-                height: '15rem',
-                objectFit: 'cover',
-              }}
-            />
-          )}
+          }
 
           <Card.Body className='pt-0 h-100 d-flex flex-column'>
             <Card.Title className='item-title'>

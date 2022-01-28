@@ -12,12 +12,7 @@ const Register = ({ showModal, handleClose }) => {
     const formData = new FormData(e.target)
     const formDataObj = Object.fromEntries(formData.entries())
 
-    if (!checkPassword(formDataObj.password, formDataObj.passwordRepeat)) {
-      return (
-        setMessage('Ihre Passwörter stimmen leider nicht überein.'),
-        setMessageType('danger')
-      )
-    }
+    if (!checkPassword(formDataObj.password, formDataObj.passwordRepeat)) return
 
     let user = {
       email: formDataObj.email,
@@ -41,12 +36,9 @@ const Register = ({ showModal, handleClose }) => {
         setMessageType('success')
         setMessage('Benutzer erfolgreich erstellt')
       })
-      .catch(function (error) {
+      .catch(function (e) {
         setMessageType('warning')
-        setMessage(
-          'Das tut uns leid, da ist ein Fehler aufgetreten. Bitte versuche es später erneut.'
-        )
-        console.error(error)
+        setMessage(e.response.data.message)
       })
       .finally(() => {
         e.target.reset()
@@ -54,7 +46,21 @@ const Register = ({ showModal, handleClose }) => {
   }
 
   const checkPassword = (password, passwordRepeat) => {
-    return password === passwordRepeat
+    const re = new RegExp(
+      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+    )
+    if (password !== passwordRepeat) {
+      setMessage('Deine Passwörter stimmen leider nicht überein.')
+      setMessageType('warning')
+      return false
+    }
+
+    if (!re.test(password)) {
+      setMessage('Dein Passwort erfüllt nicht unsere Passwortrichtlinie')
+      setMessageType('warning')
+      return false
+    }
+    return true
   }
 
   useEffect(() => {
@@ -101,7 +107,12 @@ const Register = ({ showModal, handleClose }) => {
             <Col md={6}>
               <Form.Group className='' controlId='formBasicEmail'>
                 <Form.Label>Vorname</Form.Label>
-                <Form.Control type='text' placeholder='Max' name='prename' required/>
+                <Form.Control
+                  type='text'
+                  placeholder='Max'
+                  name='prename'
+                  required
+                />
               </Form.Group>
             </Col>
             <Col md={6}>
@@ -130,6 +141,11 @@ const Register = ({ showModal, handleClose }) => {
               name='password'
               required
             />
+            <Form.Text className='text-muted'>
+              Dein Passwort muss aus mindestens einem Großbuchstaben, einem
+              Kleinbuchstaben, einer Zahl und einem Sonderzeichen bestehen. Dein
+              Passwort muss mindestens 8 Zeichen lang sein.
+            </Form.Text>
           </Form.Group>
           <Form.Group className='mb-3' controlId='formBasicPassword'>
             <Form.Label>Passwort wiederholen</Form.Label>

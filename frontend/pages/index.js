@@ -5,10 +5,14 @@ import axios from 'axios'
 import FilterLanding from '../components/FilterLanding'
 import Landing from '../components/Landing'
 import { Container } from 'react-bootstrap'
+import Head from 'next/head'
 
 const Shop = ({ productList }) => {
   return (
     <>
+      <Head>
+        <title>Holzprojekt</title>
+      </Head>
       <Layout container={false}>
         <Landing />
         <Container>

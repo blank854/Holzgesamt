@@ -1,11 +1,11 @@
-import axios from 'axios'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState } from 'react'
 import {
   ENTRIES_PER_PAGE,
   FELLING_STATE,
   HIGHEST_RELEVANCE,
   LOCATION,
   PRICE_VALUE,
+  TITLE,
 } from '../constants/filter_constants'
 
 const FilterContext = React.createContext()
@@ -59,10 +59,14 @@ export const FilterProvider = ({ children }) => {
   const addFilter = (pFilter, payload) => {
     let tmpFilter = filter
     let filterData = {}
-    let index = 0
+    let index = getFilterIndex(pFilter)
 
     switch (pFilter) {
       case PRICE_VALUE:
+        if (!payload.minPrice && !payload.maxPrice) {
+          return index >= 0 ? tmpFilter.filters.splice(index, 1) : null
+        }
+
         filterData = {
           field: PRICE_VALUE,
           value: {},
@@ -71,24 +75,27 @@ export const FilterProvider = ({ children }) => {
         if (payload.minPrice) filterData.value.$gte = payload.minPrice
         if (payload.maxPrice) filterData.value.$lte = payload.maxPrice
 
-        index = getFilterIndex(pFilter)
         break
       case LOCATION:
+        if (!payload.zip)
+          return index >= 0 ? tmpFilter.filters.splice(index, 1) : null
+
         filterData = {
           field: LOCATION,
           maxDistance: payload.maxDistance,
           zip: payload.zip,
         }
 
-        index = getFilterIndex(pFilter)
         break
       case FELLING_STATE:
+        if (payload.felled === null)
+          return index >= 0 ? tmpFilter.filters.splice(index, 1) : null
+
         filterData = {
           field: FELLING_STATE,
           value: payload.felled,
         }
 
-        index = getFilterIndex(pFilter)
         break
     }
 
@@ -108,17 +115,27 @@ export const FilterProvider = ({ children }) => {
   }
 
   const getSortOrder = () => {
-    return filter.sorter
+    if (!filter.sorter) return 'höchste Relevanz'
+    if (filter.sorter[PRICE_VALUE]) {
+      return filter.sorter[PRICE_VALUE] === 1
+        ? 'Preis aufsteigend'
+        : 'Preis absteigend'
+    }
+
+    if (filter.sorter[TITLE]) {
+      return filter.sorter[TITLE] === 1
+        ? 'Alphabetisch aufsteigend'
+        : 'Alphabetisch absteigend'
+    }
   }
 
   const setSortOrder = (type, sort_order) => {
     let tmpFilter = filter
-    if (type === HIGHEST_RELEVANCE) {
-      filter.sorter = {}
-    } else {
-      filter.sorter = {}
-      filter.sorter[type] = sort_order
-    }
+    tmpFilter.sorter = {}
+
+    if (type === HIGHEST_RELEVANCE) return delete tmpFilter.sorter
+
+    tmpFilter.sorter[type] = sort_order
 
     setFilter(tmpFilter)
   }

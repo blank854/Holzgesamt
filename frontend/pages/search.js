@@ -6,6 +6,7 @@ import ItemList from '../components/ItemList'
 import Layout from '../components/Layout'
 import { useFilter } from '../contexts/FilterContext'
 import { useMessage } from '../contexts/MessageContext'
+import Head from 'next/head'
 
 const searchPage = () => {
   const [searchResult, setSearchResult] = useState([])
@@ -25,33 +26,36 @@ const searchPage = () => {
       data: getAllFilters(),
     }
 
-    console.log(config)
-
     axios(config).then((response) => {
       setSearchResult(response.data)
     })
   }, [])
 
   return (
-    <Layout>
-      <Row className='mt-5'>
-        <Col md={10}>
-          <h4 className='d-inline-block me-3 my-0'>Ihre Suchergebnisse</h4>
-          <Badge bg='secondary' className='text-primary' pill>
-            {searchResult.length}
-          </Badge>
-        </Col>
-        <Col md={2}>
-          <Filter
-            setSearchResult={setSearchResult}
-            setChanged={setChanged}
-            changed={changed}
-          />
-        </Col>
-      </Row>
+    <>
+      <Head>
+        <title>Suche | Holzprojekt</title>
+      </Head>
+      <Layout>
+        <Row className='mt-5'>
+          <Col md={10}>
+            <h4 className='d-inline-block me-3 my-0'>Ihre Suchergebnisse</h4>
+            <Badge bg='secondary' className='text-primary' pill>
+              {searchResult.length}
+            </Badge>
+          </Col>
+          <Col md={2}>
+            <Filter
+              setSearchResult={setSearchResult}
+              setChanged={setChanged}
+              changed={changed}
+            />
+          </Col>
+        </Row>
 
-      <ItemList productList={searchResult} changed={changed} />
-    </Layout>
+        <ItemList productList={searchResult} changed={changed} />
+      </Layout>
+    </>
   )
 }
 

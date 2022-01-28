@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Carousel, Col, Row } from 'react-bootstrap'
+import { Carousel } from 'react-bootstrap'
 
 const ImageGallery = ({ images }) => {
   const [activeImage, setActiveImage] = useState(0)
@@ -15,8 +15,8 @@ const ImageGallery = ({ images }) => {
         onSelect={handleSelect}
         interval={null}
       >
-        {images.map((image, index) => (
-          <Carousel.Item key={index} className='rounded'>
+        {images.map((image) => (
+          <Carousel.Item key={image} className='rounded'>
             <img
               className='d-block w-100 rounded'
               src={image.access}
@@ -36,7 +36,7 @@ const ImageGallery = ({ images }) => {
             alt='Bilder des Inserats'
             style={{ objectFit: 'contain', maxHeight: '70px' }}
             onClick={() => handleSelect(index)}
-            key={index}
+            key={image + 'thumbnail'}
           />
         ))}
       </div>

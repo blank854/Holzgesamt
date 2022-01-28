@@ -8,7 +8,6 @@ import ApplyFilter from './filters/ApplyFilter'
 const FilterLanding = () => {
   const [priceRange, setPriceRange] = useState([0, 500])
   const [felled, setFelled] = useState([false])
-  const [usage, setUsage] = useState("")
   const [circling, setCircling] = useState(50)
   const [location, setLocation] = useState([])
   const [search, setSearch] = useState('')
@@ -40,8 +39,6 @@ const FilterLanding = () => {
         },
       ],
     })
-
-    console.log(filterData)
   }, [priceRange, felled, circling, search, location])
   return (
     <div className='Filter mt-3 d-flex' style={{ gap: '1rem' }}>

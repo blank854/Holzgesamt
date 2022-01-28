@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form, Row, Col, ListGroup } from 'react-bootstrap'
+import { Button, Form, Row, Col } from 'react-bootstrap'
 import Alert from 'react-bootstrap/Alert'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -9,6 +9,7 @@ import { useUser } from '../contexts/UserContext'
 import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { useMessage } from '../contexts/MessageContext'
 import AutoComplete from '../components/AutoComplete'
+import Head from 'next/head'
 
 const createAdvert = () => {
   const { getUser } = useUser()
@@ -36,11 +37,12 @@ const createAdvert = () => {
     let tmpSelectedQualities = selectedQualities.split(' ')
     tmpSelectedQualities.push(Quality)
     setSelectedQualities(tmpSelectedQualities.join(' '))
-    console.log(tmpSelectedQualities)
   }
   const handleSelect = (e) => {
     setPriceType(e)
   }
+
+  const handleimgdelete = (imgPath) => {}
 
   const handleLocate = () => {
     if (navigator.geolocation) {
@@ -100,7 +102,6 @@ const createAdvert = () => {
         zip: formDataObj.zip,
       }
     }
-    console.log(offer)
 
     const config = {
       method: 'post',
@@ -134,10 +135,6 @@ const createAdvert = () => {
       })
   }
 
-  const handleDropdownClick = (e) => {
-    setPriceType(e.target.outerText)
-  }
-
   const handleFileUpload = (e) => {
     setLoading(true)
     setFile(e.target.files[0])
@@ -155,10 +152,8 @@ const createAdvert = () => {
           URL: imgPaths[0].access,
         },
       }
-      console.log(config)
       axios(config)
         .then(function (response) {
-          console.log(response)
           if (response.data.length > 0) {
             setLatinSpecies(response.data[0].species)
             setLatinSpeciesColor('bg-info text-white')
@@ -168,7 +163,10 @@ const createAdvert = () => {
           }
         })
         .catch(function (error) {
-          console.log(error)
+          setMessage(
+            'Fehler beim Identifizieren des Bildes. Bitte versuche es erneut.'
+          )
+          setVariant('warning')
         })
     }
   }
@@ -195,7 +193,10 @@ const createAdvert = () => {
         setLoading(false)
       })
       .catch((e) => {
-        console.error(e)
+        setMessage(
+          'Fehler beim Hochladen des Bildes. Bitte versuche es erneut.'
+        )
+        setVariant('warning')
       })
   }, [file])
 
@@ -219,10 +220,14 @@ const createAdvert = () => {
   }, [])
 
   return (
-    <Layout>
-      <div className='CreateAdvert'>
-        <Form onSubmit={handleCreateAdvert}>
-          <Row className='mt-3'>
+    <>
+      <Head>
+        <title>Inserat erstellen</title>
+      </Head>
+      <Layout>
+        <div className='CreateAdvert'>
+          <Form onSubmit={handleCreateAdvert}>
+            {/* <Row className='mt-3'> */}
             <Col md={12}>
               {/* <h4>Anzeigendetails</h4> */}
               {/* <div className='block-example border border-danger'> */}
@@ -253,7 +258,7 @@ const createAdvert = () => {
                   className='mb-3'
                   controlId='formHorizontalTitel'
                 >
-                  <Form.Label column sm={2}>
+                  <Form.Label column sm={2} md={2}>
                     Titel <span className='text-danger'> * </span>
                   </Form.Label>
 
@@ -271,7 +276,7 @@ const createAdvert = () => {
                   className='mb-3'
                   controlId='formHorizontalDescription'
                 >
-                  <Form.Label column sm={2}>
+                  <Form.Label column sm={2} md={2}>
                     Beschreibung <span className='text-danger'> * </span>
                   </Form.Label>
                   <Col sm={6}>
@@ -300,7 +305,7 @@ const createAdvert = () => {
                   className='mb-3'
                   controlId='formHorizontalPrice'
                 >
-                  <Form.Label column sm={2}>
+                  <Form.Label column sm={2} md={2}>
                     Preis <span className='text-danger'> * </span>
                   </Form.Label>
                   <Col sm={2}>
@@ -318,10 +323,11 @@ const createAdvert = () => {
 
                       <DropdownButton
                         id='dropdown-price'
-                        title={priceType ? priceType : 'Preistyp'}
+                        title={
+                          priceType ? priceType : setPriceType('Festpreis')
+                        }
                         variant='dark'
                         onSelect={handleSelect}
-                        aria-required
                       >
                         <Dropdown.Item
                           eventKey='Festpreis'
@@ -344,7 +350,7 @@ const createAdvert = () => {
                   className='mb-3'
                   controlId='formHorizontalLocation'
                 >
-                  <Form.Label column sm={2}>
+                  <Form.Label column sm={2} md={2}>
                     Standort <span className='text-danger'> * </span>
                   </Form.Label>
                   <Col sm={2}>
@@ -369,23 +375,43 @@ const createAdvert = () => {
                   </Form.Text>
                 </Form.Group>
 
-                <Form.Group controlId='formFile' className='mb-3 d-flex'>
-                  <Form.Label column sm={2}>
-                    Bilder
-                  </Form.Label>
-                  <Col sm={6} className='d-flex'>
-                    <Form.Label className='fileUpload bg-dark rounded text-center border border-primary pointer text-primary d-flex justify-content-center align-items-center'>
+                <Form.Group
+                  as={Row}
+                  controlId='formFile'
+                  className='mb-3 d-flex'
+                >
+                  <Col xs={12} md={2}>
+                    <Form.Label>Bilder</Form.Label>
+                  </Col>
+                  <Col xs={12} md={6} className='d-flex'>
+                    <Form.Label
+                      column
+                      sm={12}
+                      md={2}
+                      className='fileUpload bg-dark rounded text-center border border-primary pointer text-primary d-flex justify-content-center align-items-center '
+                    >
                       <div>
                         <i className='fas fa-camera fa-4x'></i>
                       </div>
                     </Form.Label>
+
                     {imgPaths.map((imgPath, index) => (
-                      <img
-                        key={index}
-                        src={imgPath.access}
-                        className='rounded border border-primary ms-3'
+                      <div
+                        className='position-relative '
                         style={{ height: '10rem' }}
-                      />
+                      >
+                        <img
+                          key={index}
+                          src={imgPath.access}
+                          className='rounded border border-primary ms-3 h-100'
+                        />{' '}
+                        <div
+                          className='position-absolute image-close pointer'
+                          onClick={() => handleimgdelete(imgPath.access)}
+                        >
+                          <i className='far fa-times-circle text-white'></i>
+                        </div>
+                      </div>
                     ))}
                     <Form.Control
                       type='file'
@@ -396,7 +422,7 @@ const createAdvert = () => {
                   </Col>
                 </Form.Group>
                 <Form.Group controlId='formFile' className='mb-3 d-flex'>
-                  <Form.Label column sm={2}></Form.Label>
+                  <Form.Label column sm={2} md={2}></Form.Label>
 
                   <div className='d-flex align-items-center'>
                     <Button
@@ -420,7 +446,7 @@ const createAdvert = () => {
                     className='mb-3'
                     controlId='formHorizontalSpecies'
                   >
-                    <Form.Label column sm={2}>
+                    <Form.Label column sm={2} md={2}>
                       Baumspezies (lat.)
                     </Form.Label>
                     <Col sm={6}>
@@ -440,7 +466,7 @@ const createAdvert = () => {
                     className='mb-3'
                     controlId='formHorizontalSpecies'
                   >
-                    <Form.Label column sm={2}>
+                    <Form.Label column sm={2} md={2}>
                       Baumspezies <span className='text-danger'> * </span>
                     </Form.Label>
                     <Col sm={6} className='position-relative'>
@@ -456,7 +482,7 @@ const createAdvert = () => {
                     className='d-flex'
                     controlId='formHorizontalDimension'
                   >
-                    <Form.Label column sm={2}>
+                    <Form.Label column sm={2} md={2}>
                       Dimension
                     </Form.Label>
                     <Col sm={5}>
@@ -467,7 +493,12 @@ const createAdvert = () => {
                           name='height'
                           maxLength='150px'
                         />
-                        <Form.Label column sm={2} className='text-center'>
+                        <Form.Label
+                          column
+                          sm={2}
+                          md={2}
+                          className='text-center'
+                        >
                           Meter
                         </Form.Label>
                         <Form.Control
@@ -475,7 +506,12 @@ const createAdvert = () => {
                           placeholder='Umfang'
                           name='circumference'
                         />
-                        <Form.Label column sm={2} className='text-center'>
+                        <Form.Label
+                          column
+                          sm={2}
+                          md={2}
+                          className='text-center'
+                        >
                           Zentimeter
                         </Form.Label>
                       </div>
@@ -491,7 +527,7 @@ const createAdvert = () => {
                     className='mb-3'
                     controlId='formHorizontalQuality'
                   >
-                    <Form.Label column sm={2}>
+                    <Form.Label column sm={2} md={2}>
                       Qualität
                     </Form.Label>
                     <Col sm={6}>
@@ -513,12 +549,12 @@ const createAdvert = () => {
                     className='mb-3'
                     controlId='qualityoptions'
                   >
-                    <Form.Label column sm={2}></Form.Label>
+                    <Form.Label column sm={2} md={2}></Form.Label>
                     <Col sm={6}>
-                      <div className='my-3 '>
+                      <div className='my-3 w-100 '>
                         {availableQualities.map((availableQuality, index) => (
                           <span
-                            className='bg-primary px-3 py-2 me-3 rounded text-white pointer'
+                            className='bg-primary px-3 py-2 me-3 rounded text-white pointer d-inline-block mb-3'
                             key={index}
                             onClick={() => handleAddQuality(availableQuality)}
                           >
@@ -533,7 +569,7 @@ const createAdvert = () => {
                     className='mb-3'
                     controlId='formHorizontalAccessibility'
                   >
-                    <Form.Label column sm={2}>
+                    <Form.Label column sm={2} md={2}>
                       Erreichbarkeit
                     </Form.Label>
                     <Col sm={6}>
@@ -554,10 +590,10 @@ const createAdvert = () => {
                       controlId='formHorizontalTimeWindow'
                     >
                       <div className='d-flex'>
-                        <Form.Label column sm={2} className='d-flex'>
+                        <Form.Label column xs={6} md={2} className='d-flex'>
                           Eingeschränkt
                         </Form.Label>
-                        <Col sm={6}>
+                        <Col sm={6} className='d-flex h-100 align-items-center'>
                           <Form.Check
                             type='switch'
                             id='custom-switch'
@@ -575,7 +611,7 @@ const createAdvert = () => {
                       controlId='formHorizontalTimeFrom'
                     >
                       {restricted ? (
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} md={2}>
                           Von
                         </Form.Label>
                       ) : (
@@ -591,10 +627,16 @@ const createAdvert = () => {
                                   name='datefrom'
                                   placeholder='Due date'
                                   maxLength='150px'
+                                  required
                                 />
                               </Form.Group>
 
-                              <Form.Label column sm={2} className='text-center'>
+                              <Form.Label
+                                column
+                                sm={2}
+                                md={2}
+                                className='text-center'
+                              >
                                 Bis
                               </Form.Label>
 
@@ -604,6 +646,7 @@ const createAdvert = () => {
                                   name='dateto'
                                   placeholder='Due date'
                                   maxWidth='150px'
+                                  required
                                 />
                               </Form.Group>
                             </>
@@ -623,7 +666,7 @@ const createAdvert = () => {
                       className='mb-3'
                       controlId='formHorizontalprotectionState'
                     >
-                      <Form.Label column sm={2}>
+                      <Form.Label column sm={2} md={2}>
                         Schutzstatus
                       </Form.Label>
                       <Col sm={6}>
@@ -640,7 +683,7 @@ const createAdvert = () => {
                       controlId='formHorizontalfellingState'
                     >
                       <div className='d-flex'>
-                        <Form.Label column sm={2} className='d-flex'>
+                        <Form.Label column sm={2} md={2} className='d-flex'>
                           Baum gefällt?
                         </Form.Label>
                         <Col sm={6}>
@@ -661,7 +704,7 @@ const createAdvert = () => {
                       controlId='formHorizontalTimeFrom'
                     >
                       {felled ? (
-                        <Form.Label column sm={2}>
+                        <Form.Label column sm={2} md={2}>
                           Fälldatum
                         </Form.Label>
                       ) : (
@@ -677,6 +720,7 @@ const createAdvert = () => {
                                   name='fellingDate'
                                   placeholder='Due date'
                                   maxLength='150px'
+                                  required
                                 />
                               </Form.Group>
                             </>
@@ -704,10 +748,11 @@ const createAdvert = () => {
                 </Col>
               </div>
             </Col>
-          </Row>
-        </Form>
-      </div>
-    </Layout>
+            {/* </Row> */}
+          </Form>
+        </div>
+      </Layout>
+    </>
   )
 }
 

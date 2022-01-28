@@ -9,6 +9,7 @@ import { useChat } from '../contexts/ChatContext'
 import ImageGallery from '../components/ImageGallery'
 import { useRouter } from 'next/router'
 import { useMessage } from '../contexts/MessageContext'
+import Head from 'next/head'
 
 const productDetail = ({ productDetail, API_KEY }) => {
   const { getUser, toggleFavorite, favorites, loggedIn } = useUser()
@@ -18,6 +19,7 @@ const productDetail = ({ productDetail, API_KEY }) => {
     setShowChat,
     setProductDetail,
     chatList,
+    getChatList,
     setConversation,
   } = useChat()
 
@@ -30,7 +32,6 @@ const productDetail = ({ productDetail, API_KEY }) => {
   useEffect(() => {
     setMessage('')
 
-    console.log(productDetail)
     const loader = new Loader({
       apiKey: API_KEY,
       version: 'weekly',
@@ -46,10 +47,9 @@ const productDetail = ({ productDetail, API_KEY }) => {
     })
   }, [])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (requester) {
       if (loggedIn === false) {
-        console.log('test')
         setMessage(
           'Du musst angemeldet sein, um deine Nachrichten anzuschauen.'
         )
@@ -57,28 +57,31 @@ const productDetail = ({ productDetail, API_KEY }) => {
         return
       }
       setShowChat(true)
-      if (chatList.length === 0) return
-      let index = chatList.findIndex((elem) => elem.reciever._id === requester)
+      const tmpChatList = await getChatList()
+      if (tmpChatList.length === 0) return
+      let index = tmpChatList.findIndex(
+        (elem) => elem.reciever._id === requester
+      )
 
       if (index < 0) {
-        index = chatList.findIndex((elem) => elem.sender._id === requester)
+        index = tmpChatList.findIndex((elem) => elem.sender._id === requester)
       }
-      setConversation(chatList[index]._id)
+
+      setConversation(tmpChatList[index]._id)
     }
-  }, [chatList])
+  }, [])
 
   const handleStartChat = () => {
-    checkForExistingChat(productDetail)
-      .then(() => {
-        setProductDetail(productDetail)
-        setShowChat(true)
-      })
-      .catch((e) => {
-        console.error(e)
-      })
+    checkForExistingChat(productDetail).then(() => {
+      setProductDetail(productDetail)
+      setShowChat(true)
+    })
   }
   return (
     <>
+      <Head>
+        <title>{productDetail.title}</title>
+      </Head>
       <Layout>
         <Row className='mt-3'>
           <Col md={12} lg={6} className='mb-3'>
@@ -108,8 +111,7 @@ const productDetail = ({ productDetail, API_KEY }) => {
                       className='me-3 flex-grow-1 w-100 h-100'
                       onClick={() => toggleFavorite(productDetail._id)}
                     >
-                      {favorites &&
-                      favorites.some((e) => e._id === productDetail._id)
+                      {favorites.some((e) => e._id === productDetail._id)
                         ? 'Von Favoriten entfernen'
                         : 'Zu Favoriten hinzufügen'}
                     </Button>
