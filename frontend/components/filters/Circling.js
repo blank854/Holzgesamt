@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import 'rc-slider/assets/index.css'
 import Slider from 'rc-slider'
 import { Col, Form, Row } from 'react-bootstrap'
 import { useFilter } from '../../contexts/FilterContext'
