@@ -586,11 +586,17 @@ const createAdvert = () => {
                     <h5>Zeitfenster</h5>
                     <Form.Group
                       as={Row}
-                      className='mb-3'
+                      className='mb-3 d-flex'
                       controlId='formHorizontalTimeWindow'
                     >
                       <div className='d-flex'>
-                        <Form.Label column xs={6} md={2} className='d-flex'>
+                        <Form.Label
+                          column
+                          xs={6}
+                          s={4}
+                          md={2}
+                          className='d-flex'
+                        >
                           Eingeschränkt
                         </Form.Label>
                         <Col sm={6} className='d-flex h-100 align-items-center'>
@@ -611,50 +617,55 @@ const createAdvert = () => {
                       controlId='formHorizontalTimeFrom'
                     >
                       {restricted ? (
-                        <Form.Label column sm={2} md={2}>
+                        <Form.Label column xs={2} sm={2} md={2}>
                           Von
                         </Form.Label>
                       ) : (
                         ''
                       )}
-                      <Col sm={5}>
-                        <div className='d-flex'>
-                          {restricted ? (
-                            <>
-                              <Form.Group controlId='datefrom'>
-                                <Form.Control
-                                  type='date'
-                                  name='datefrom'
-                                  placeholder='Due date'
-                                  maxLength='150px'
-                                  required
-                                />
-                              </Form.Group>
+                      {/* <Col xs={12} sm={3} md={2}> */}
+                      {/* <div className='d-flex'> */}
+                      {restricted ? (
+                        <>
+                          <Form.Group controlId='datefrom'>
+                            <Col xs={6} sm={3} md={2}>
+                              <Form.Control
+                                type='date'
+                                name='datefrom'
+                                placeholder='Due date'
+                                //maxLength='150px'
+                                required
+                              />
+                            </Col>
+                          </Form.Group>
 
-                              <Form.Label
-                                column
-                                sm={2}
-                                md={2}
-                                className='text-center'
-                              >
-                                Bis
-                              </Form.Label>
+                          <Form.Label
+                            column
+                            xs={2}
+                            sm={2}
+                            md={2}
+                            //className='text-center'
+                          >
+                            Bis
+                          </Form.Label>
 
-                              <Form.Group controlId='dateto'>
-                                <Form.Control
-                                  type='date'
-                                  name='dateto'
-                                  placeholder='Due date'
-                                  maxWidth='150px'
-                                  required
-                                />
-                              </Form.Group>
-                            </>
-                          ) : (
-                            ''
-                          )}
-                        </div>
-                      </Col>
+                          <Form.Group controlId='dateto'>
+                            <Col xs={6} sm={3} md={2}>
+                              <Form.Control
+                                type='date'
+                                name='dateto'
+                                placeholder='Due date'
+                                //maxWidth='150px'
+                                required
+                              />
+                            </Col>
+                          </Form.Group>
+                        </>
+                      ) : (
+                        ''
+                      )}
+                      {/* </div> */}
+                      {/* </Col> */}
                     </Form.Group>
                   </div>
                 </div>
@@ -683,10 +694,10 @@ const createAdvert = () => {
                       controlId='formHorizontalfellingState'
                     >
                       <div className='d-flex'>
-                        <Form.Label column sm={2} md={2} className='d-flex'>
+                        <Form.Label column xs={6} md={2} className='d-flex'>
                           Baum gefällt?
                         </Form.Label>
-                        <Col sm={6}>
+                        <Col sm={6} className='d-flex h-100 align-items-center'>
                           <Form.Check
                             type='switch'
                             id='custom-switch'
@@ -696,6 +707,7 @@ const createAdvert = () => {
                             value={felled}
                           />
                         </Col>
+                        <span className='align-botton'></span>
                       </div>
                     </Form.Group>
                     <Form.Group
