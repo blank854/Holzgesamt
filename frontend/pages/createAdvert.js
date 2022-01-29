@@ -293,12 +293,6 @@ const createAdvert = () => {
                       />
                     </FloatingLabel>
                   </Col>
-                  <Col s={3}>
-                    <Alert variant='light'>
-                      Tipp: Mit einer guten Beschreibung findest du schneller
-                      einen Käufer.
-                    </Alert>
-                  </Col>
                 </Form.Group>
                 <Form.Group
                   as={Row}
@@ -579,6 +573,12 @@ const createAdvert = () => {
                         name='accessibility'
                       />
                     </Col>
+                    <Col s={3}>
+                      <Alert variant='light'>
+                        Tipp: Kommt man an den Baum leicht heran oder ist er
+                        tief im Wald.
+                      </Alert>
+                    </Col>
                   </Form.Group>
                 </div>
                 <div className='Timewindow my-5'>
@@ -589,27 +589,27 @@ const createAdvert = () => {
                       className='mb-3 d-flex'
                       controlId='formHorizontalTimeWindow'
                     >
-                      <div className='d-flex'>
-                        <Form.Label
-                          column
-                          xs={6}
-                          s={4}
-                          md={2}
-                          className='d-flex'
-                        >
-                          Eingeschränkt
-                        </Form.Label>
-                        <Col sm={6} className='d-flex h-100 align-items-center'>
-                          <Form.Check
-                            type='switch'
-                            id='custom-switch'
-                            name='restricted'
-                            onChange={() => setRestricted(!restricted)}
-                            value={restricted}
-                          />
-                        </Col>
-                        <span className='align-botton'></span>
-                      </div>
+                      {/* <div className='d-flex'> */}
+                      <Form.Label column xs={6} s={4} md={2} className='d-flex'>
+                        Eingeschränkt
+                      </Form.Label>
+                      <Col sm={6} className='d-flex h-100 align-items-center'>
+                        <Form.Check
+                          type='switch'
+                          id='custom-switch'
+                          name='restricted'
+                          onChange={() => setRestricted(!restricted)}
+                          value={restricted}
+                        />
+                      </Col>
+                      {/* <span className='align-botton'></span> */}
+                      {/* </div> */}
+                      <Col s={3}>
+                        <Alert variant='light'>
+                          Tipp: Manche Bäume können nur zu einem eingeschränkten
+                          Zeitfenster gefällt werden.
+                        </Alert>
+                      </Col>
                     </Form.Group>
                     <Form.Group
                       as={Row}
@@ -686,6 +686,11 @@ const createAdvert = () => {
                           placeholder='Schutzstatus'
                           name='protectionState'
                         />
+                      </Col>
+                      <Col s={3}>
+                        <Alert variant='light'>
+                          Tipp: Ist der Baum besonders gefährdet?
+                        </Alert>
                       </Col>
                     </Form.Group>
                     <Form.Group
