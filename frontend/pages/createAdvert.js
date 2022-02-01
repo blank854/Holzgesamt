@@ -43,7 +43,6 @@ const createAdvert = () => {
   }
 
   const handleimgdelete = (imgPath) => {
-    console.log(imgPaths)
     setImgPaths(imgPaths.filter((elem) => elem.access !== imgPath))
   }
 
