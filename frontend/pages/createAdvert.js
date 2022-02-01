@@ -42,7 +42,10 @@ const createAdvert = () => {
     setPriceType(e)
   }
 
-  const handleimgdelete = (imgPath) => {}
+  const handleimgdelete = (imgPath) => {
+    console.log(imgPaths)
+    setImgPaths(imgPaths.filter((elem) => elem.access !== imgPath))
+  }
 
   const handleLocate = () => {
     if (navigator.geolocation) {
