@@ -603,11 +603,12 @@ const createAdvert = () => {
                           name='restricted'
                           onChange={() => setRestricted(!restricted)}
                           value={restricted}
+                          className='col-form-label'
                         />
                       </Col>
                       {/* <span className='align-botton'></span> */}
                       {/* </div> */}
-                      <Col s={3}>
+                      <Col xs={12} md={3}>
                         <Alert variant='light'>
                           Tipp: Manche Bäume können nur zu einem eingeschränkten
                           Zeitfenster gefällt werden.
@@ -631,7 +632,7 @@ const createAdvert = () => {
                       {restricted ? (
                         <>
                           <Form.Group controlId='datefrom'>
-                            <Col xs={6} sm={3} md={2}>
+                            <Col xs={6} sm={5} md={2}>
                               <Form.Control
                                 type='date'
                                 name='datefrom'
@@ -653,7 +654,7 @@ const createAdvert = () => {
                           </Form.Label>
 
                           <Form.Group controlId='dateto'>
-                            <Col xs={6} sm={3} md={2}>
+                            <Col xs={6} sm={5} md={2}>
                               <Form.Control
                                 type='date'
                                 name='dateto'
