@@ -73,14 +73,16 @@ const myAdverts = () => {
                       <Col sm={12} md={6}>
                         <p>
                           <b>Titel</b>
-                        </p>
-                        <p>
-                          <p>{offer.title}</p>
+                          <br />
+                          {offer.title}
                         </p>
                       </Col>
                       <Col sm={12} md={6}>
-                        <b>Preis</b>
-                        <p>{`${offer.price.priceValue}€ ${offer.price.priceType}`}</p>
+                        <p>
+                          <b>Preis</b>
+                          <br />
+                          {`${offer.price.priceValue}€ ${offer.price.priceType}`}
+                        </p>
                       </Col>
                     </Row>
                     <Row className='mt-5'>

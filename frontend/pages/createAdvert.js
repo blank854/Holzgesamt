@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Form, Row, Col } from 'react-bootstrap'
+import { Button, Form, Row, Col, Spinner } from 'react-bootstrap'
 import Alert from 'react-bootstrap/Alert'
 import Dropdown from 'react-bootstrap/Dropdown'
 import DropdownButton from 'react-bootstrap/DropdownButton'
@@ -22,6 +22,7 @@ const createAdvert = () => {
   const [location, setLocation] = useState([])
   const [restricted, setRestricted] = useState(false)
   const [felled, setFelled] = useState(false)
+  const [loadingIdentify, setLoadingIdentify] = useState(false)
   const [availableQualities, setAvailableQualities] = useState([
     'Gerade',
     'Schief',
@@ -143,6 +144,7 @@ const createAdvert = () => {
   }
 
   const handleIdentify = (e) => {
+    setLoadingIdentify(true)
     if (imgPaths.length > 0) {
       const config = {
         method: 'post',
@@ -169,6 +171,9 @@ const createAdvert = () => {
             'Fehler beim Identifizieren des Bildes. Bitte versuche es erneut.'
           )
           setVariant('warning')
+        })
+        .finally(() => {
+          setLoadingIdentify(false)
         })
     }
   }
@@ -426,9 +431,13 @@ const createAdvert = () => {
                       size='lg'
                       className='w-100'
                       onClick={handleIdentify}
+                      disabled={loadingIdentify}
                     >
                       Baum identifizieren
                     </Button>
+                    <div className={`ms-3 ${!loadingIdentify ? 'd-none' : ''}`}>
+                      <Spinner animation='border' />
+                    </div>
                   </div>
                 </Form.Group>
               </div>
