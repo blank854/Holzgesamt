@@ -85,7 +85,7 @@ const createAdvert = () => {
         timeWindow: {
           restricted: formDataObj.restricted ? true : false,
           from: formDataObj.datefrom,
-          to: formDataObj.dateto,
+          till: formDataObj.dateto,
         },
         fellingState: {
           felled: formDataObj.felled ? true : false,

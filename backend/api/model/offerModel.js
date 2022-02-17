@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const locationSchema = require("./components/locationSchema")
+const mongoose = require('mongoose')
+const locationSchema = require('./components/locationSchema')
 // const AlgoliaBatch = require('../model/algoliaBatchModel')
 // const algoliarecommend = require('@algolia/recommend');
 // const algoliaSearch = require("algoliasearch")
@@ -7,97 +7,106 @@ const locationSchema = require("./components/locationSchema")
 // const algoliaSearchClient = algoliaSearch(process.env.ALGOLIA_APPLICATION_ID, process.env.ALGOLIA_API_KEY);
 // const algoliaIndex = algoliaSearchClient.initIndex('HolzProjektInserate');
 
-
 const offerSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    title: {
+  _id: mongoose.Schema.Types.ObjectId,
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  price: {
+    priceType: {
+      type: String,
+      enum: ['Festpreis', 'Verhandlungsbasis', 'Geschenk'],
+      required: true,
+    },
+    priceValue: Number,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  prospects: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+  ],
+  created: Date,
+  lastUpdated: Date,
+  status: {
+    required: true,
+    type: String,
+    enum: ['Vorlage', 'Gesperrt', 'Gelöscht', 'Offen', 'Geschlossen'],
+  },
+  treeDetail: {
+    location: { type: locationSchema },
+    species: {
+      german: {
         type: String,
-        required: true
+        required: true,
+      },
+      latin: String,
     },
-    description: {
-        type: String,
-        required: true
+    dimensions: {
+      height: mongoose.Schema.Types.Number,
+      circumference: mongoose.Schema.Types.Number,
     },
-    price: {
-        priceType: {
-            type: String,
-            enum: ["Festpreis", "Verhandlungsbasis","Geschenk"],
-            required : true,
-        },
-        priceValue: Number
+    quality: String,
+    accessibility: String,
+    timeWindow: {
+      restricted: Boolean,
+      from: Date,
+      till: Date,
     },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
+    protectionState: String,
+    fellingState: {
+      felled: {
+        type: Boolean,
+        required: true,
+      },
+      fellingDate: Date,
     },
-    prospects: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-        required: true
-    }],
-    created: Date,
-    lastUpdated: Date,
-    status: {required : true, type: String, enum:["Vorlage","Gesperrt","Gelöscht","Offen","Geschlossen"]},
-    treeDetail: {
-        location: { type: locationSchema
-        },
-        species: { 
-            german: {
-                type: String,
-                required: true
-            },
-            latin: String
-        },
-        dimensions: {
-            height: mongoose.Schema.Types.Number,
-            circumference: mongoose.Schema.Types.Number
-        },
-        quality: String,
-        accessibility: String,
-        timeWindow:{
-            restricted: Boolean,
-            from: Date,
-            till: Date
-        },
-        protectionState: String,
-        fellingState: {
-            felled: {
-                type: Boolean,
-                required: true
-            },
-            fellingDate: Date,
-            
-        }
+  },
+  pictures: [
+    {
+      title: String,
+      access: String,
     },
-    pictures: [{
-        title: String,
-        access: String
-    }],
-    scores:{
-        favorites: Number,
-        contacts: Number,
-        detailViews: Number,
-        scoreRank: Number,
+  ],
+  scores: {
+    favorites: Number,
+    contacts: Number,
+    detailViews: Number,
+    scoreRank: Number,
+  },
+  recommendations: [
+    {
+      score: Number,
+      offer: { type: mongoose.Schema.Types.ObjectId, ref: 'Offer' },
     },
-    recommendations:[{
-        score: Number,
-        offer:{type: mongoose.Schema.Types.ObjectId,
-                ref: 'Offer'}
-        }]
+  ],
 })
 
-offerSchema.index({ "treeDetail.location" : '2dsphere' });
+offerSchema.index({ 'treeDetail.location': '2dsphere' })
 
 offerSchema.statics.findMax = function () {
-
-    return new Promise((resolve, reject)=>{
-        this.findOne()
-            .sort({"price.priceValue" : -1})
-            .exec()
-            .then(offer =>{resolve(offer)})
-            .catch(err => {reject(err)})
-    })
+  return new Promise((resolve, reject) => {
+    this.findOne()
+      .sort({ 'price.priceValue': -1 })
+      .exec()
+      .then((offer) => {
+        resolve(offer)
+      })
+      .catch((err) => {
+        reject(err)
+      })
+  })
 }
 
 // offerSchema.statics.updateAlgolia = async function (update){
@@ -109,7 +118,7 @@ offerSchema.statics.findMax = function () {
 
 //         if (!algoliaBatch.offer.includes(update._id)){
 //             updateBatch.offer.push(update._id)
-//         }  
+//         }
 
 //         updateBatch.counter  = algoliaBatch.counter + 1
 
@@ -121,7 +130,7 @@ offerSchema.statics.findMax = function () {
 //                     sendRecords.push({
 //                         objectID : item._id,
 //                         title : item.title,
-//                         description: item.description, 
+//                         description: item.description,
 //                         price: item.price,
 //                         speciesGerman: item.treeDetail.species.german,
 //                         height: item.treeDetail.dimensions.height,
@@ -141,7 +150,6 @@ offerSchema.statics.findMax = function () {
 //                   .catch(err => {
 //                     console.log(err);
 //                   });
-                
 
 //             })
 //             .catch((err) => { return });
@@ -172,7 +180,7 @@ offerSchema.statics.findMax = function () {
 //     return new Promise((resolve, reject)=>{
 //          console.log(algoliaIndex)
 //         // algoliaSearchClient.listIndices().then(res=>{console.log(res)})
-        
+
 //         algoliaRecommendClient.getRelatedProducts([
 //             {
 //               indexName: 'HolzProjektInserate',
@@ -188,8 +196,8 @@ offerSchema.statics.findMax = function () {
 //           .catch(err => {
 //             console.log(err);
 //             reject(err)
-//           }); 
-//     }) 
+//           });
+//     })
 // }
 
-module.exports = mongoose.model('Offer', offerSchema);
+module.exports = mongoose.model('Offer', offerSchema)

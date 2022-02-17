@@ -7,11 +7,14 @@ import Landing from '../components/Landing'
 import { Container } from 'react-bootstrap'
 import Head from 'next/head'
 import { useMessage } from '../contexts/MessageContext'
+import { useFilter } from '../contexts/FilterContext'
 
 const Shop = ({ productList }) => {
   const { setMessage } = useMessage()
+  const { deleteAllFilters } = useFilter()
   useEffect(() => {
     setMessage('')
+    deleteAllFilters()
   }, [])
   return (
     <>
