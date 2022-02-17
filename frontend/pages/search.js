@@ -9,11 +9,12 @@ import { useMessage } from '../contexts/MessageContext'
 import Head from 'next/head'
 import { ENTRIES_PER_PAGE } from '../constants/filter_constants'
 
-const searchPage = () => {
+const SearchPage = () => {
   const [searchResult, setSearchResult] = useState([])
   const [pageCount, setPageCount] = useState([])
   const [activePage, setActivePage] = useState(1)
   const [changed, setChanged] = useState(false)
+  const [resultCount, setResultCount] = useState()
   const { getAllFilters, setPage, nextPage, previousPage } = useFilter()
   const { setMessage } = useMessage()
 
@@ -60,6 +61,7 @@ const searchPage = () => {
 
   useEffect(() => {
     if (!searchResult.count) return
+    setResultCount(searchResult.count)
     const tmpPageCount = Math.ceil(searchResult.count / ENTRIES_PER_PAGE)
     let tmpPages = []
     for (let i = 0; i < tmpPageCount; i++) {
@@ -72,14 +74,14 @@ const searchPage = () => {
   return (
     <>
       <Head>
-        <title>Suche | Holzprojekt</title>
+        <title>Suche | Baumazon</title>
       </Head>
       <Layout>
         <Row className='mt-5'>
           <Col md={10}>
             <h4 className='d-inline-block me-3 my-0'>Ihre Suchergebnisse</h4>
             <Badge bg='secondary' className='text-primary' pill>
-              {searchResult.count}
+              {resultCount}
             </Badge>
           </Col>
           <Col md={2}>
@@ -104,6 +106,7 @@ const searchPage = () => {
               <Pagination.Item
                 onClick={() => handleSetPage(index)}
                 active={activePage === index}
+                key={index}
               >
                 {index}
               </Pagination.Item>
@@ -118,4 +121,4 @@ const searchPage = () => {
   )
 }
 
-export default searchPage
+export default SearchPage

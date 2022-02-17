@@ -24,7 +24,7 @@ const Navigation = () => {
         <Container>
           <Navbar.Brand>
             <Link href='/'>
-              <a className='font-weight-bold nav-link pointer'>Holzprojekt</a>
+              <a className='font-weight-bold nav-link pointer'>Baumazon</a>
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />

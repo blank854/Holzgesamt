@@ -11,7 +11,7 @@ import { useMessage } from '../contexts/MessageContext'
 import AutoComplete from '../components/AutoComplete'
 import Head from 'next/head'
 
-const createAdvert = () => {
+const CreateAdvert = () => {
   const { getUser } = useUser()
   const { setMessage, setVariant } = useMessage()
   const [priceType, setPriceType] = useState('')
@@ -400,6 +400,7 @@ const createAdvert = () => {
                       <div
                         className='position-relative '
                         style={{ height: '10rem' }}
+                        key={index}
                       >
                         <img
                           key={index}
@@ -785,4 +786,4 @@ const createAdvert = () => {
   )
 }
 
-export default createAdvert
+export default CreateAdvert

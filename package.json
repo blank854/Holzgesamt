@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "postinstall": "(cd frontend && npm i) && (cd ../backend && npm i)",
-    "start": "node backend/Server.js",
     "server": "nodemon backend/Server",
-    "client": "npm run dev --prefix frontend",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "clientdev": "npm run dev --prefix frontend",
+    "client": "npm run start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run clientdev\"",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },

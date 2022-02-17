@@ -112,9 +112,15 @@ export const FilterProvider = ({ children }) => {
   }
 
   const deleteAllFilters = () => {
-    let tmpFilter = filter
-    filter.filters = []
-    setFilter(tmpFilter)
+    setFilter({
+      filters: [],
+      paging: {
+        count: true,
+        limit: ENTRIES_PER_PAGE,
+        skip: 0,
+      },
+      usage: [],
+    })
   }
 
   const getSortOrder = () => {

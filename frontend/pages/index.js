@@ -19,7 +19,7 @@ const Shop = ({ productList }) => {
   return (
     <>
       <Head>
-        <title>Holzprojekt</title>
+        <title>Baumazon</title>
       </Head>
       <Layout container={false}>
         <Landing />

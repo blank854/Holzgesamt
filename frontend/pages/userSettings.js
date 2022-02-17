@@ -5,7 +5,7 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 import Head from 'next/head'
 
-const userSettings = () => {
+const UserSettings = () => {
   const { getAccountInformation, accountInformation, updateUser, getUser } =
     useUser()
   const { setMessage } = useMessage()
@@ -136,4 +136,4 @@ const userSettings = () => {
   )
 }
 
-export default userSettings
+export default UserSettings

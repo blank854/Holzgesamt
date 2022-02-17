@@ -11,7 +11,7 @@ import { useRouter } from 'next/router'
 import { useMessage } from '../contexts/MessageContext'
 import Head from 'next/head'
 
-const productDetail = ({ productDetail, API_KEY }) => {
+const ProductDetail = ({ productDetail, API_KEY }) => {
   const { getUser, toggleFavorite, favorites, loggedIn } = useUser()
   const { setMessage, setVariant } = useMessage()
   const {
@@ -198,7 +198,7 @@ const productDetail = ({ productDetail, API_KEY }) => {
   )
 }
 
-export default productDetail
+export default ProductDetail
 
 export async function getServerSideProps(context) {
   const productId = context.params._id

@@ -6,7 +6,7 @@ import { useMessage } from '../contexts/MessageContext'
 import { useUser } from '../contexts/UserContext'
 import Head from 'next/head'
 
-const myFavorites = () => {
+const MyFavorites = () => {
   const { favorites, getFavorites, toggleFavorite, getUser } = useUser()
   const { setMessage } = useMessage()
 
@@ -85,4 +85,4 @@ const myFavorites = () => {
   )
 }
 
-export default myFavorites
+export default MyFavorites
